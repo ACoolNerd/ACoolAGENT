@@ -21,3 +21,21 @@ See `powershell-setup.ps1`
 ## 📤 Deploy
 ```bash
 firebase deploy
+
+---
+
+### 📁 **Bonus: Create `powershell-setup.ps1`**
+```powershell
+# powershell-setup.ps1
+
+Write-Host "Installing Firebase CLI..."
+npm install -g firebase-tools
+
+Write-Host "Logging into Firebase..."
+firebase login
+
+Write-Host "Initializing Firebase Hosting..."
+firebase init hosting
+
+Write-Host "Serving project locally..."
+firebase serve
