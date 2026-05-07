@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACoolAGENT Performance Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-blue-800 text-white shadow-lg">
+            <div class="container mx-auto py-4 px-6 flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold">ACoolAGENT Dashboard</h1>
+                    <span class="ml-2 text-sm bg-green-500 text-white px-2 py-1 rounded">LIVE</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <select id="dateRange" class="bg-blue-700 text-white px-4 py-2 rounded-lg appearance-none pr-8 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <button class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-download mr-2"></i> Export
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto py-6 px-6">
+            <!-- Top Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <!-- Users Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Total Users</p>
+                            <h3 class="text-3xl font-bold text-gray-800">352</h3>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-users text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-green-500 flex items-center text-sm font-medium">
+                            <i class="fas fa-arrow-up mr-1"></i> 12.5%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">from last month</span>
+                    </div>
+                </div>
+
+                <!-- Successful Registrations Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Successful Registrations</p>
+                            <h3 class="text-3xl font-bold text-gray-800">127</h3>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-green-500 flex items-center text-sm font-medium">
+                            <i class="fas fa-arrow-up mr-1"></i> 8.3%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">from last month</span>
+                    </div>
+                </div>
+
+                <!-- Avg. Processing Time Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Avg. Processing Time</p>
+                            <h3 class="text-3xl font-bold text-gray-800">18.5 <span class="text-lg">days</span></h3>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-clock text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-green-500 flex items-center text-sm font-medium">
+                            <i class="fas fa-arrow-down mr-1"></i> 2.4 days
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">from last month</span>
+                    </div>
+                </div>
+
+                <!-- User Satisfaction Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">User Satisfaction</p>
+                            <h3 class="text-3xl font-bold text-gray-800">94.2%</h3>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <i class="fas fa-star text-yellow-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-green-500 flex items-center text-sm font-medium">
+                            <i class="fas fa-arrow-up mr-1"></i> 1.8%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">from last month</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- User Registration Progress Chart -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-700">Registration Progress</h3>
+                        <div class="flex space-x-2">
+                            <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">Weekly</button>
+                            <button class="text-sm text-blue-600 font-medium hover:text-blue-800 focus:outline-none">Monthly</button>
+                            <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">Yearly</button>
+                        </div>
+                    </div>
+                    <div class="h-80">
+                        <canvas id="registrationProgressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Success Rate by Agency -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-700">Success Rate by Agency</h3>
+                        <button class="text-sm text-gray-500 hover:text-gray-700 focus:outline-none flex items-center">
+                            <i class="fas fa-filter mr-1"></i> Filter
+                        </button>
+                    </div>
+                    <div class="h-80">
+                        <canvas id="agencySuccessChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Business Types -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Business Types</h3>
+                    <div class="h-64">
+                        <canvas id="businessTypesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Timeline Performance -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Timeline Performance</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">EIN Registration</span>
+                                <span class="text-sm font-medium text-gray-700">98%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-green-600 h-2.5 rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Business Name Registration</span>
+                                <span class="text-sm font-medium text-gray-700">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">City Tax Registration</span>
+                                <span class="text-sm font-medium text-gray-700">76%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 76%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Permit Applications</span>
+                                <span class="text-sm font-medium text-gray-700">65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Funding Applications</span>
+                                <span class="text-sm font-medium text-gray-700">42%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-orange-500 h-2.5 rounded-full" style="width: 42%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-700">Recent Activity</h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-800 focus:outline-none">View All</button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-check text-green-500"></i>
+                            </div>
+                            <div>
