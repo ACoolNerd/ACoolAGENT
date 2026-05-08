@@ -1,275 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ACoolAgent — AI-Powered Ecosystem Command Center</title>
-  <meta name="description" content="ACoolAgent: AI-powered WhatsApp assistant and ecosystem command center for ACoolECOSYSTEM." />
-  <meta property="og:title" content="ACoolAgent — ACoolECOSYSTEM Command Center" />
-  <meta property="og:description" content="AI-powered WhatsApp assistant + ecosystem orchestration hub." />
-  <meta property="og:url" content="https://acoolnerd.github.io/acoolagent" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ACoolAGENT — Ecosystem Command Center</title>
+<meta name="description" content="ACoolECOSYSTEM Command Center: Board Hub, Org Chart, LA Resources, WhatsApp Agent, Roadmap."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <!-- Animated background -->
-  <div class="bg-grid"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-  <!-- Nav -->
-  <nav id="navbar">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">ACoolAgent</span>
-      </div>
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#agents">Agents</a>
-        <a href="#status">Status</a>
-        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-nav">GitHub ↗</a>
-      </div>
-    </div>
-  </nav>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">ACoolAGENT</span><span class="nav-badge">ECOSYSTEM OS</span></div>
+    <div class="score-pill">Quality Score: <strong id="qscore">9.5</strong>/10</div>
+  </div>
+</nav>
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      ACoolECOSYSTEM · v1.0 · LIVE
-    </div>
-    <h1 class="hero-title">
-      Your Ecosystem.<br />
-      <span class="gradient-text">AI-Commanded.</span>
-    </h1>
-    <p class="hero-sub">
-      ACoolAgent is the central intelligence hub — powering WhatsApp automation,
-      sub-agent orchestration, and real-time ecosystem command across every
-      ACoolECOSYSTEM vertical.
-    </p>
-    <div class="hero-actions">
-      <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-primary">
-        <span>View on GitHub</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-      </a>
-      <a href="#features" class="btn-ghost">Explore Features</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-num" id="counter-agents">0</span>
-        <span class="stat-label">AI Agents</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num" id="counter-pillars">0</span>
-        <span class="stat-label">Eco Pillars</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num" id="counter-uptime">0</span>
-        <span class="stat-label">% Uptime</span>
-      </div>
-    </div>
-  </section>
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="overview">📊 Overview</button>
+  <button class="tab-btn" data-tab="orgchart">🏛️ Org Chart</button>
+  <button class="tab-btn" data-tab="board">🧑‍💼 Board Hub</button>
+  <button class="tab-btn" data-tab="resources">📍 LA Resources</button>
+  <button class="tab-btn" data-tab="agent">🤖 ACoolAGENT</button>
+  <button class="tab-btn" data-tab="roadmap">🗺️ Roadmap</button>
+</div>
 
-  <!-- Feature Grid -->
-  <section class="features" id="features">
+<!-- ══════════════════ OVERVIEW TAB ══════════════════ -->
+<div class="tab-content active" id="tab-overview">
+  <div class="page-wrap">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-num" id="kpi-entities">22</div><div class="kpi-label">Ecosystem Entities</div></div>
+      <div class="kpi-card"><div class="kpi-num" id="kpi-board">14</div><div class="kpi-label">Board Members</div></div>
+      <div class="kpi-card"><div class="kpi-num" id="kpi-bsc">14</div><div class="kpi-label">BSC Locations</div></div>
+      <div class="kpi-card orange"><div class="kpi-num">9.5</div><div class="kpi-label">Dashboard Score</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3 class="card-title">🔥 Critical This Week</h3>
+        <ul class="task-list" id="critical-tasks">
+          <li><input type="checkbox" id="t1"><label for="t1">Send board interest emails (14 members)</label></li>
+          <li><input type="checkbox" id="t2"><label for="t2">File ACoolHOLDINGS LLC — CA SOS ($70)</label></li>
+          <li><input type="checkbox" id="t3"><label for="t3">Get Anthropic API key for ACoolAGENT</label></li>
+          <li><input type="checkbox" id="t4"><label for="t4">Apply for Meta WhatsApp Business API</label></li>
+          <li><input type="checkbox" id="t5"><label for="t5">Book 1:1 with Kenn Phillips (Chair)</label></li>
+          <li><input type="checkbox" id="t6"><label for="t6">Register ACoolNERD S-Corp (revenue vehicle)</label></li>
+          <li><input type="checkbox" id="t7"><label for="t7">Schedule BusinessSource Center intake (free)</label></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">💡 Hard Truth</h3>
+        <p class="truth-text">You have 22 entities planned, 14 board members recruited, and a WhatsApp AI agent designed — but <strong>zero revenue</strong> and <strong>zero filings</strong>. The ecosystem is a vision deck, not a business. Pick ONE revenue-generating entity (ACoolNERD), close ONE client this week, and use that cash to file ACoolHOLDINGS. Everything else is noise until money moves.</p>
+        <div class="priority-pills">
+          <span class="pill red">Revenue First</span>
+          <span class="pill orange">File Holdings</span>
+          <span class="pill blue">Send Emails</span>
+          <span class="pill green">Deploy Agent</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-20">
+      <h3 class="card-title">🏗️ Entity Cluster Summary</h3>
+      <div class="cluster-grid">
+        <div class="cluster-card" style="--cc:#f97316"><div class="cc-icon">📚</div><strong>Education</strong><p>ACoolACADEMY · ACoolDATASET · ACoolKNOWLEDGEBASE</p><span class="cc-type">501c3 / LLC</span></div>
+        <div class="cluster-card" style="--cc:#06b6d4"><div class="cc-icon">💼</div><strong>Business</strong><p>ACoolBUSINESS · ACoolENTERPRISE · ACoolLTD · ACoolJOBBOARD</p><span class="cc-type">S-Corp / C-Corp / LLC</span></div>
+        <div class="cluster-card" style="--cc:#8b5cf6"><div class="cc-icon">🌍</div><strong>Social Impact</strong><p>ACoolCAUSE · ACoolENDOWMENT · ACoolGRANT · ACoolCOOP</p><span class="cc-type">501c3 / Cooperative</span></div>
+        <div class="cluster-card" style="--cc:#10b981"><div class="cc-icon">⚙️</div><strong>Infrastructure</strong><p>ACoolFRAMEWORK · ACoolINFRASTRUCTURE · ACoolAI</p><span class="cc-type">LLC</span></div>
+        <div class="cluster-card" style="--cc:#f43f5e"><div class="cc-icon">❤️</div><strong>Health</strong><p>ACoolHEALTH</p><span class="cc-type">501c3</span></div>
+        <div class="cluster-card" style="--cc:#eab308"><div class="cc-icon">🏛️</div><strong>Leadership</strong><p>ACoolLEADERSHIP · ACoolLEADER · ACoolBOARD · ACoolNERD · ACoolOSINT · ACoolMOU</p><span class="cc-type">LLC / S-Corp / 501c6</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ ORG CHART TAB ══════════════════ -->
+<div class="tab-content" id="tab-orgchart">
+  <div class="page-wrap">
     <div class="section-header">
-      <span class="section-tag">CAPABILITIES</span>
-      <h2>Everything your ecosystem needs</h2>
-      <p>From WhatsApp automation to multi-vertical orchestration — ACoolAgent handles it all.</p>
+      <span class="section-tag">STRUCTURE</span>
+      <h2>ACoolECOSYSTEM Organizational Hierarchy</h2>
     </div>
-    <div class="feature-grid">
-      <div class="feature-card card-wide">
-        <div class="feature-icon">🤖</div>
-        <h3>WhatsApp AI Assistant</h3>
-        <p>Intelligent, context-aware responses powered by the ACoolECOSYSTEM knowledge base. Handles inquiries, bookings, and routing automatically.</p>
-        <div class="feature-tags">
-          <span class="tag">NLP</span>
-          <span class="tag">Auto-Route</span>
-          <span class="tag">24/7</span>
-        </div>
+    <div class="org-tree">
+      <div class="org-node root">
+        <div class="org-box trust">ACoolTRUST<br/><small>Family Trust</small></div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🧠</div>
-        <h3>Agent Hierarchy</h3>
-        <p>Nested sub-agent system with role-based delegation and priority queuing.</p>
-        <div class="feature-tags">
-          <span class="tag">RBAC</span>
-          <span class="tag">Queue</span>
-        </div>
+      <div class="org-connector-v"></div>
+      <div class="org-node">
+        <div class="org-box holdings">ACoolHOLDINGS<br/><small>Manager-Managed LLC</small></div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📡</div>
-        <h3>Real-Time Signals</h3>
-        <p>Webhook-driven event bus connecting all ACoolECOSYSTEM services with instant propagation.</p>
-        <div class="feature-tags">
-          <span class="tag">WebSocket</span>
-          <span class="tag">Events</span>
+      <div class="org-connector-v"></div>
+      <div class="clusters-row">
+        <div class="cluster-col">
+          <div class="cluster-label edu">📚 Education</div>
+          <div class="org-box sub">ACoolACADEMY<br/><small>501c3</small></div>
+          <div class="org-box sub">ACoolDATASET<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolKNOWLEDGEBASE<br/><small>LLC</small></div>
         </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Analytics Dashboard</h3>
-        <p>Centralized metrics and KPIs across every vertical — revenue, engagement, agent performance.</p>
-        <div class="feature-tags">
-          <span class="tag">KPIs</span>
-          <span class="tag">Live</span>
+        <div class="cluster-col">
+          <div class="cluster-label biz">💼 Business</div>
+          <div class="org-box sub">ACoolBUSINESS<br/><small>S-Corp</small></div>
+          <div class="org-box sub">ACoolENTERPRISE<br/><small>C-Corp</small></div>
+          <div class="org-box sub">ACoolLTD<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolJOBBOARD<br/><small>LLC</small></div>
         </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔐</div>
-        <h3>Secure Access</h3>
-        <p>JWT-based auth with per-agent scoped permissions. Full audit trail on every action.</p>
-        <div class="feature-tags">
-          <span class="tag">JWT</span>
-          <span class="tag">Audit</span>
+        <div class="cluster-col">
+          <div class="cluster-label impact">🌍 Impact</div>
+          <div class="org-box sub">ACoolCAUSE<br/><small>501c3</small></div>
+          <div class="org-box sub">ACoolENDOWMENT<br/><small>501c3</small></div>
+          <div class="org-box sub">ACoolGRANT<br/><small>501c3</small></div>
+          <div class="org-box sub">ACoolCOOP<br/><small>Cooperative</small></div>
         </div>
-      </div>
-      <div class="feature-card card-wide">
-        <div class="feature-icon">🌐</div>
-        <h3>Knowledge Base Integration</h3>
-        <p>Synced with ACoolKNOWLEDGEBASE for real-time context injection. Every agent response is grounded in your ecosystem's truth.</p>
-        <div class="feature-tags">
-          <span class="tag">RAG</span>
-          <span class="tag">Sync</span>
-          <span class="tag">Grounded</span>
+        <div class="cluster-col">
+          <div class="cluster-label tech">⚙️ Tech</div>
+          <div class="org-box sub">ACoolFRAMEWORK<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolINFRASTRUCTURE<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolAI<br/><small>LLC</small></div>
+        </div>
+        <div class="cluster-col">
+          <div class="cluster-label health">❤️ Health</div>
+          <div class="org-box sub">ACoolHEALTH<br/><small>501c3</small></div>
+          <div class="cluster-label gov" style="margin-top:12px">🏛️ Gov</div>
+          <div class="org-box sub">ACoolLEADERSHIP<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolLEADER<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolBOARD<br/><small>501c6</small></div>
+          <div class="org-box sub">ACoolNERD<br/><small>S-Corp</small></div>
+          <div class="org-box sub">ACoolOSINT<br/><small>LLC</small></div>
+          <div class="org-box sub">ACoolMOU<br/><small>LLC</small></div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Agent Roster -->
-  <section class="agents" id="agents">
+    <div class="card mt-20">
+      <h3 class="card-title">📋 Full Entity Registry</h3>
+      <div class="table-wrap">
+        <table class="entity-table">
+          <thead><tr><th>Entity</th><th>Legal Structure</th><th>Cluster</th><th>Primary Purpose</th><th>Priority</th></tr></thead>
+          <tbody id="entity-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ BOARD HUB TAB ══════════════════ -->
+<div class="tab-content" id="tab-board">
+  <div class="page-wrap">
     <div class="section-header">
-      <span class="section-tag">AGENT ROSTER</span>
-      <h2>Meet the ACoolAGENTS</h2>
-      <p>Each agent owns a specific domain within the ecosystem.</p>
+      <span class="section-tag">GOVERNANCE</span>
+      <h2>ACoolBOARD Member Hub</h2>
+      <p>Track interest, send outreach, manage your board pipeline.</p>
     </div>
-    <div class="agent-grid">
-      <div class="agent-card" style="--accent:#f97316">
-        <div class="agent-status online"></div>
-        <div class="agent-avatar">🧭</div>
-        <h4>ACoolCOMMANDER</h4>
-        <p>Top-level orchestrator. Routes tasks, manages priority queues, and enforces ecosystem-wide governance.</p>
-        <div class="agent-domain">Domain: Orchestration</div>
-      </div>
-      <div class="agent-card" style="--accent:#06b6d4">
-        <div class="agent-status online"></div>
-        <div class="agent-avatar">💬</div>
-        <h4>ACoolMESSENGER</h4>
-        <p>WhatsApp-native assistant. Handles inbound messages, qualifies leads, and routes to the right vertical.</p>
-        <div class="agent-domain">Domain: Communication</div>
-      </div>
-      <div class="agent-card" style="--accent:#8b5cf6">
-        <div class="agent-status online"></div>
-        <div class="agent-avatar">📚</div>
-        <h4>ACoolSCHOLAR</h4>
-        <p>Manages the ACoolKNOWLEDGEBASE. Indexes new content, surfaces relevant context, and keeps agents grounded.</p>
-        <div class="agent-domain">Domain: Knowledge</div>
-      </div>
-      <div class="agent-card" style="--accent:#10b981">
-        <div class="agent-status standby"></div>
-        <div class="agent-avatar">💰</div>
-        <h4>ACoolCFO</h4>
-        <p>Financial intelligence agent. Tracks revenue, flags anomalies, and generates ecosystem P&L summaries.</p>
-        <div class="agent-domain">Domain: Finance</div>
-      </div>
-      <div class="agent-card" style="--accent:#f43f5e">
-        <div class="agent-status standby"></div>
-        <div class="agent-avatar">🎯</div>
-        <h4>ACoolMARKETER</h4>
-        <p>Social media orchestration, content scheduling, and brand consistency enforcement across platforms.</p>
-        <div class="agent-domain">Domain: Marketing</div>
-      </div>
-      <div class="agent-card" style="--accent:#eab308">
-        <div class="agent-status standby"></div>
-        <div class="agent-avatar">🔬</div>
-        <h4>ACoolANALYST</h4>
-        <p>Data synthesis and insight generation. Turns raw ecosystem signals into actionable intelligence.</p>
-        <div class="agent-domain">Domain: Analytics</div>
-      </div>
+    <div class="board-stats-row">
+      <div class="b-stat"><span id="yes-count">0</span> Confirmed Yes</div>
+      <div class="b-stat"><span id="no-count">0</span> Declined</div>
+      <div class="b-stat"><span id="pending-count">14</span> Pending</div>
     </div>
-  </section>
+    <div class="board-grid" id="board-grid"></div>
+  </div>
+</div>
 
-  <!-- Live Status -->
-  <section class="status-section" id="status">
+<!-- ══════════════════ LA RESOURCES TAB ══════════════════ -->
+<div class="tab-content" id="tab-resources">
+  <div class="page-wrap">
     <div class="section-header">
-      <span class="section-tag">SYSTEM STATUS</span>
-      <h2>Ecosystem Health</h2>
-      <p>Real-time infrastructure and service status across ACoolECOSYSTEM.</p>
+      <span class="section-tag">LA ECOSYSTEM</span>
+      <h2>Los Angeles Business Resources</h2>
+      <p>Free services for entrepreneurs across the City of LA — all cross-referenced for ACoolECOSYSTEM integration.</p>
     </div>
-    <div class="status-grid">
-      <div class="status-card">
-        <div class="status-row">
-          <span class="status-name">WhatsApp Gateway</span>
-          <span class="status-badge operational">Operational</span>
-        </div>
-        <div class="status-bar"><div class="status-fill" style="width:98%"></div></div>
-        <span class="status-uptime">98.7% uptime</span>
-      </div>
-      <div class="status-card">
-        <div class="status-row">
-          <span class="status-name">Agent Orchestrator</span>
-          <span class="status-badge operational">Operational</span>
-        </div>
-        <div class="status-bar"><div class="status-fill" style="width:100%"></div></div>
-        <span class="status-uptime">100% uptime</span>
-      </div>
-      <div class="status-card">
-        <div class="status-row">
-          <span class="status-name">Knowledge Base API</span>
-          <span class="status-badge operational">Operational</span>
-        </div>
-        <div class="status-bar"><div class="status-fill" style="width:99%"></div></div>
-        <span class="status-uptime">99.2% uptime</span>
-      </div>
-      <div class="status-card">
-        <div class="status-row">
-          <span class="status-name">Analytics Engine</span>
-          <span class="status-badge degraded">Building</span>
-        </div>
-        <div class="status-bar"><div class="status-fill degraded" style="width:62%"></div></div>
-        <span class="status-uptime">In Development</span>
-      </div>
-    </div>
-  </section>
 
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="cta-inner">
-      <h2>Ready to command your ecosystem?</h2>
-      <p>Fork the repo, configure your agents, and deploy in minutes.</p>
-      <div class="cta-actions">
-        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-primary">
-          <span>Star on GitHub</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </a>
-        <a href="https://github.com/ACoolNERD/acoolagent/issues" target="_blank" class="btn-ghost">Request a Feature</a>
+    <div class="resource-orgs">
+      <div class="org-pill active-org" data-org="bsc">BusinessSource Centers (EWDD)</div>
+      <div class="org-pill" data-org="new">New Economics for Women (NEW)</div>
+      <div class="org-pill" data-org="pace">PACE Business</div>
+      <div class="org-pill" data-org="crcd">CRCD Southeast LA BSC</div>
+      <div class="org-pill" data-org="mcs">Managed Career Solutions (MCS)</div>
+    </div>
+
+    <div id="resource-panels">
+      <!-- BSC PANEL -->
+      <div class="resource-panel active-panel" id="panel-bsc">
+        <div class="resource-intro">
+          <h3>BusinessSource Centers — FREE for LA Entrepreneurs</h3>
+          <p>Operated by EWDD. No-cost consulting, training, access to capital, workforce development, and permit assistance. Bilingual advisors available. <strong>ACoolECOSYSTEM partnership opportunity: leverage BSC cohorts for ACoolACADEMY recruitment.</strong></p>
+          <a href="https://ewdd.lacity.gov/index.php/business/businesssource" target="_blank" class="btn-outline">EWDD BSC Portal ↗</a>
+        </div>
+        <div class="bsc-grid" id="bsc-locations"></div>
+      </div>
+
+      <!-- NEW PANEL -->
+      <div class="resource-panel" id="panel-new">
+        <div class="resource-intro">
+          <h3>New Economics for Women (NEW)</h3>
+          <p>Founded 1985 — California's first Latina-led economic development nonprofit. 1,700+ units of affordable housing, $35M+ in capital facilitated in 2023. Operates East LA/Boyle Heights BSC at 1780 E. First Street.</p>
+          <p><strong>ACoolECOSYSTEM Alignment:</strong> ACoolCAUSE, ACoolHEALTH, ACoolCOOP partnership. ACoolACADEMY curriculum integration for women entrepreneurs.</p>
+          <div class="resource-links">
+            <a href="https://neweconomicsforwomen.org" target="_blank" class="btn-outline">neweconomicsforwomen.org ↗</a>
+            <a href="https://ewdd.lacity.gov" target="_blank" class="btn-outline">EWDD ↗</a>
+          </div>
+          <div class="resource-detail-card">
+            <div class="rd-row"><span class="rd-label">BSC Location</span><span>1780 East First Street, Los Angeles 90033</span></div>
+            <div class="rd-row"><span class="rd-label">Phone</span><span>323-568-1520</span></div>
+            <div class="rd-row"><span class="rd-label">Languages</span><span>English, Spanish</span></div>
+            <div class="rd-row"><span class="rd-label">Services</span><span>1-on-1 consulting, ETP, Access to Capital, Workforce Dev, Permits</span></div>
+            <div class="rd-row"><span class="rd-label">Lending Arm</span><span>NCI Lending — Small Business + Homebuyer Programs</span></div>
+            <div class="rd-row"><span class="rd-label">Notable</span><span>$2,500 forgivable loans (Altadena Fire Relief), Homebuyer Fairs</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PACE PANEL -->
+      <div class="resource-panel" id="panel-pace">
+        <div class="resource-intro">
+          <h3>PACE Business Development Center</h3>
+          <p>Nonprofit advancing community wealth via sustainable business development and personal finance. Operates 2 BSC locations in Hollywood and Pico-Union/Westlake.</p>
+          <p><strong>ACoolECOSYSTEM Alignment:</strong> ACoolACADEMY curriculum partner. PACE serves Korean, Mandarin, Tagalog, Armenian communities — alignment with ACoolKNOWLEDGEBASE multilingual content.</p>
+          <a href="https://pacelabdc.org/pacebscs/" target="_blank" class="btn-outline">PACE BSC Portal ↗</a>
+          <div class="resource-detail-card">
+            <div class="rd-row"><span class="rd-label">Hollywood BSC</span><span>1370 N. St. Andrews Place #215, LA 90028</span></div>
+            <div class="rd-row"><span class="rd-label">Phone</span><span>213-989-3158</span></div>
+            <div class="rd-row"><span class="rd-label">Pico-Union BSC</span><span>1055 Wilshire Blvd #900-B, LA 90017</span></div>
+            <div class="rd-row"><span class="rd-label">Phone</span><span>213-353-9400</span></div>
+            <div class="rd-row"><span class="rd-label">Languages</span><span>English, Korean, Thai, Mandarin, Cantonese, Tagalog, Spanish, Armenian, Farsi, Hindi, French, Lingala + more</span></div>
+            <div class="rd-row"><span class="rd-label">Email (Pico-Union)</span><span>PicoUnionLABSC@pacela.org</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRCD PANEL -->
+      <div class="resource-panel" id="panel-crcd">
+        <div class="resource-intro">
+          <h3>Coalition for Responsible Community Development (CRCD)</h3>
+          <p>Southeast LA BusinessSource Center — bilingual services, microloan access, ETP, e-commerce training, green business transitions, and SBA loan packaging.</p>
+          <p><strong>ACoolECOSYSTEM Alignment:</strong> ACoolCOOP + ACoolCAUSE — CRCD's workforce and housing model mirrors ACoolECOSYSTEM's community impact pillars.</p>
+          <a href="https://coalitionrcd.org/programs/selabusinesssourcecenter/" target="_blank" class="btn-outline">CRCD BSC ↗</a>
+          <div class="resource-detail-card">
+            <div class="rd-row"><span class="rd-label">Primary Location</span><span>3761 S. Hill St. Unit #1, LA 90007</span></div>
+            <div class="rd-row"><span class="rd-label">Alt Location</span><span>200 E. Washington Blvd, LA 90015</span></div>
+            <div class="rd-row"><span class="rd-label">Hours</span><span>Mon–Fri 8:30am–5pm (Evenings/Sat by appt)</span></div>
+            <div class="rd-row"><span class="rd-label">Phone</span><span>213.743.6193</span></div>
+            <div class="rd-row"><span class="rd-label">Email</span><span>info@coalitionrcd.org</span></div>
+            <div class="rd-row"><span class="rd-label">Services</span><span>Microloans, SBA packaging, Green Business, E-Commerce, Procurement certification</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MCS PANEL -->
+      <div class="resource-panel" id="panel-mcs">
+        <div class="resource-intro">
+          <h3>Managed Career Solutions (MCS)</h3>
+          <p>State-designated Social Purpose Corporation. 30+ years, 5,000+ clients/year, 5 AJCCs, 3 BSCs across LA/OC. Specializes in Veterans, justice-involved, persons with disabilities, homeless, and SCSEP seniors.</p>
+          <p><strong>ACoolECOSYSTEM Alignment:</strong> ACoolJOBBOARD + ACoolCAUSE — MCS is a direct integration partner for workforce pipelines. West Valley BSC operator.</p>
+          <a href="https://mcscareergroup.com" target="_blank" class="btn-outline">MCS Website ↗</a>
+          <div class="resource-detail-card">
+            <div class="rd-row"><span class="rd-label">Headquarters</span><span>3333 Wilshire Blvd Suite 405, LA 90010</span></div>
+            <div class="rd-row"><span class="rd-label">Phone</span><span>213.355.5300</span></div>
+            <div class="rd-row"><span class="rd-label">Email</span><span>info@mcscareergroup.com</span></div>
+            <div class="rd-row"><span class="rd-label">West Valley BSC</span><span>Spanish Business Accelerator — 97 participants, 33 businesses, $5K microloans</span></div>
+            <div class="rd-row"><span class="rd-label">Next English BAP</span><span>Contact: (747) 265-6201 or tinyurl.com/mcs-bap</span></div>
+            <div class="rd-row"><span class="rd-label">Populations Served</span><span>Veterans, Justice-Involved, Disabled, Homeless, LGBTQ+, ITIN holders, Seniors</span></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="logo-icon">⚡</span>
-        <span>ACoolAgent</span>
+<!-- ══════════════════ ACOOLAGENT TAB ══════════════════ -->
+<div class="tab-content" id="tab-agent">
+  <div class="page-wrap agent-layout">
+    <div class="agent-left">
+      <div class="section-header" style="text-align:left;max-width:100%;margin-bottom:24px">
+        <span class="section-tag">WHATSAPP AI</span>
+        <h2>ACoolAGENT Simulator</h2>
+        <p>Test how ACoolAGENT responds on WhatsApp Business. Type a command or question.</p>
       </div>
-      <p class="footer-copy">Part of the <strong>ACoolECOSYSTEM</strong> · Built with purpose.</p>
-      <div class="footer-links">
-        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank">GitHub</a>
-        <a href="https://github.com/ACoolNERD/acoolagent/issues" target="_blank">Issues</a>
-        <a href="https://github.com/ACoolNERD/acoolagent/blob/main/README.md" target="_blank">Docs</a>
+      <div class="chat-window" id="chat-window">
+        <div class="chat-msg agent-msg">
+          <div class="chat-bubble">
+            👋 Welcome to <strong>ACoolAGENT</strong>!<br/>I'm your AI-powered ecosystem advisor.<br/><br/>
+            Type <code>START</code> to see all commands, or ask me anything about:<br/>
+            • Business registration • Funding • BSC locations • Board status • Strategy
+          </div>
+          <div class="chat-time">ACoolAGENT · Now</div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <div class="quick-cmds">
+          <button class="qcmd" data-cmd="START">START</button>
+          <button class="qcmd" data-cmd="FUNDING">FUNDING</button>
+          <button class="qcmd" data-cmd="BSC">BSC</button>
+          <button class="qcmd" data-cmd="BOARD">BOARD</button>
+          <button class="qcmd" data-cmd="ADVISOR">ADVISOR</button>
+          <button class="qcmd" data-cmd="ROADMAP">ROADMAP</button>
+        </div>
+        <div class="chat-input-wrap">
+          <input type="text" id="chat-input" placeholder="Type a message or command..." autocomplete="off"/>
+          <button id="chat-send">Send</button>
+        </div>
       </div>
     </div>
-  </footer>
+    <div class="agent-right">
+      <div class="card">
+        <h3 class="card-title">📡 Integration Guide</h3>
+        <div class="integration-steps">
+          <div class="int-step"><div class="int-num">1</div><div><strong>Meta Business Account</strong><p>business.facebook.com → Add WhatsApp → Create App</p></div></div>
+          <div class="int-step"><div class="int-num">2</div><div><strong>Get API Token</strong><p>Meta Developer Dashboard → WhatsApp → API Access</p></div></div>
+          <div class="int-step"><div class="int-num">3</div><div><strong>Anthropic Key</strong><p>console.anthropic.com → API Keys → Claude claude-3-5-haiku</p></div></div>
+          <div class="int-step"><div class="int-num">4</div><div><strong>Deploy Webhook</strong><p>vercel deploy → Set env vars → Verify with Meta</p></div></div>
+          <div class="int-step"><div class="int-num">5</div><div><strong>Go Live</strong><p>Test with your WA number → Invite board members</p></div></div>
+        </div>
+      </div>
+      <div class="card mt-16">
+        <h3 class="card-title">💰 Cost Estimate</h3>
+        <div class="cost-table">
+          <div class="cost-row"><span>Claude API (launch)</span><span class="cost-val">~$10–30/mo</span></div>
+          <div class="cost-row"><span>Vercel Hosting</span><span class="cost-val">Free tier</span></div>
+          <div class="cost-row"><span>Meta WhatsApp API</span><span class="cost-val">~$0.005/msg</span></div>
+          <div class="cost-row"><span>Domain (optional)</span><span class="cost-val">~$12/yr</span></div>
+          <div class="cost-row total"><span><strong>Total Launch</strong></span><span class="cost-val"><strong>&lt;$50/mo</strong></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <script src="app.js"></script>
+<!-- ══════════════════ ROADMAP TAB ══════════════════ -->
+<div class="tab-content" id="tab-roadmap">
+  <div class="page-wrap">
+    <div class="section-header">
+      <span class="section-tag">EXECUTION</span>
+      <h2>ACoolECOSYSTEM Launch Roadmap</h2>
+      <p>Phase-by-phase execution plan. Check items off as you complete them.</p>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-label">Overall Progress: <span id="progress-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="phases-grid" id="phases-grid"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
