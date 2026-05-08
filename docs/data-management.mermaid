@@ -1,0 +1,112 @@
+flowchart TB
+    subgraph "Data Collection Layer"
+        A1[WhatsApp Messages]
+        A2[Web Portal Forms]
+        A3[Document Uploads]
+        A4[Agency Interactions]
+        A5[Assessment Responses]
+    end
+
+    subgraph "Data Processing Layer"
+        B1[Message Processing Engine]
+        B2[Document Validation Service]
+        B3[User Profile Builder]
+        B4[Timeline Generator]
+        B5[Analytics Engine]
+    end
+
+    subgraph "Data Storage Layer"
+        C1[(User Database)]
+        C2[(Document Repository)]
+        C3[(Agency Information DB)]
+        C4[(Message History DB)]
+        C5[(Analytics Database)]
+    end
+
+    subgraph "Security Layer"
+        D1{Authentication Service}
+        D2{Encryption Engine}
+        D3{Access Control}
+        D4{Audit Logging}
+        D5{Data Retention Policy}
+    end
+
+    subgraph "Data Access Layer"
+        E1[API Gateway]
+        E2[Admin Portal]
+        E3[User Dashboard]
+        E4[Reporting Engine]
+        E5[Export Services]
+    end
+
+    %% Connections between layers
+    A1 --> B1
+    A2 --> B3
+    A3 --> B2
+    A4 --> B4
+    A5 --> B3
+
+    B1 --> C4
+    B2 --> C2
+    B3 --> C1
+    B4 --> C1
+    B5 --> C5
+
+    C1 --> D3
+    C2 --> D2
+    C3 --> D3
+    C4 --> D5
+    C5 --> D4
+
+    D1 --> E1
+    D2 --> E5
+    D3 --> E2
+    D4 --> E4
+    D5 --> E3
+
+    %% Data flow for key processes
+    A1 -.-> |User Messages| C4
+    A3 -.-> |Documents| C2
+    C1 -.-> |User Profiles| E3
+    C3 -.-> |Agency Data| E3
+    C5 -.-> |Analytics| E4
+
+    %% Security flow
+    E1 --> D1
+    E2 --> D1
+    E3 --> D1
+    E4 --> D1
+    E5 --> D1
+
+    style A1 fill:#90CAF9,stroke:#0D47A1
+    style A2 fill:#90CAF9,stroke:#0D47A1
+    style A3 fill:#90CAF9,stroke:#0D47A1
+    style A4 fill:#90CAF9,stroke:#0D47A1
+    style A5 fill:#90CAF9,stroke:#0D47A1
+    
+    style B1 fill:#FFE082,stroke:#FF6F00
+    style B2 fill:#FFE082,stroke:#FF6F00
+    style B3 fill:#FFE082,stroke:#FF6F00
+    style B4 fill:#FFE082,stroke:#FF6F00
+    style B5 fill:#FFE082,stroke:#FF6F00
+    
+    style C1 fill:#A5D6A7,stroke:#2E7D32
+    style C2 fill:#A5D6A7,stroke:#2E7D32
+    style C3 fill:#A5D6A7,stroke:#2E7D32
+    style C4 fill:#A5D6A7,stroke:#2E7D32
+    style C5 fill:#A5D6A7,stroke:#2E7D32
+    
+    style D1 fill:#EF9A9A,stroke:#C62828
+    style D2 fill:#EF9A9A,stroke:#C62828
+    style D3 fill:#EF9A9A,stroke:#C62828
+    style D4 fill:#EF9A9A,stroke:#C62828
+    style D5 fill:#EF9A9A,stroke:#C62828
+    
+    style E1 fill:#CE93D8,stroke:#6A1B9A
+    style E2 fill:#CE93D8,stroke:#6A1B9A
+    style E3 fill:#CE93D8,stroke:#6A1B9A
+    style E4 fill:#CE93D8,stroke:#6A1B9A
+    style E5 fill:#CE93D8,stroke:#6A1B9A
+
+    classDef database fill:#A5D6A7,stroke:#2E7D32,stroke-width:2px
+    class C1,C2,C3,C4,C5 database

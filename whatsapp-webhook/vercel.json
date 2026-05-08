@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/webhook",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic-api-key",
+    "WHATSAPP_ACCESS_TOKEN": "@whatsapp-access-token",
+    "WHATSAPP_PHONE_NUMBER_ID": "@whatsapp-phone-number-id",
+    "WHATSAPP_VERIFY_TOKEN": "@whatsapp-verify-token"
+  }
+}

@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACoolAGENT — Launch Manifest</title>
+<style>
+:root {
+  --orange:#F57F32; --orange-light:rgba(245,127,50,0.1); --orange-dark:#d96b20;
+  --navy:#0f1e3d; --navy-mid:#1a3260;
+  --green:#16a34a; --green-light:#f0fdf4;
+  --red:#dc2626; --red-light:#fef2f2;
+  --yellow:#ca8a04; --yellow-light:#fefce8;
+  --blue:#1d4ed8; --blue-light:#eff6ff;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb;
+  --gray-300:#d1d5db; --gray-500:#6b7280; --gray-700:#374151; --gray-900:#111827;
+  --shadow:0 2px 8px rgba(0,0,0,0.08); --shadow-lg:0 8px 32px rgba(0,0,0,0.14);
+  --radius:10px; --radius-lg:16px;
+  --font:'-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+  --mono:'"SF Mono","Fira Code","Fira Mono","Roboto Mono",monospace';
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:var(--gray-900);min-height:100vh}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1a0a3d 50%,#0a1a2d 100%);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(245,127,50,0.08) 0%,transparent 70%)}
+.hero-badge{display:inline-block;background:rgba(245,127,50,0.15);border:1px solid rgba(245,127,50,0.3);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;margin-bottom:20px;text-transform:uppercase}
+.hero-title{font-size:clamp(28px,5vw,52px);font-weight:900;color:white;line-height:1.1;margin-bottom:12px;letter-spacing:-1px}
+.hero-title span{color:var(--orange)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.6);max-width:600px;margin:0 auto 32px;line-height:1.6}
+.score-display{display:inline-flex;align-items:center;gap:20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px 32px;backdrop-filter:blur(10px)}
+.score-big{font-size:72px;font-weight:900;color:var(--orange);line-height:1;font-variant-numeric:tabular-nums;transition:color 0.5s}
+.score-big.ready{color:var(--green)}
+.score-info{text-align:left}
+.score-label{font-size:13px;color:rgba(255,255,255,0.5);font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.score-status{font-size:15px;font-weight:700;color:white;margin-top:4px;transition:all 0.3s}
+.score-bar-wrap{width:180px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:8px;overflow:hidden}
+.score-bar-fill{height:100%;background:linear-gradient(to right,var(--orange),#fbbf24);border-radius:3px;transition:width 0.5s}
+.score-count{font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px}
+
+/* WRAPPER */
+.wrapper{max-width:900px;margin:0 auto;padding:32px 20px}
+
+/* PHASE HEADERS */
+.phase{margin-bottom:40px}
+.phase-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--gray-200)}
+.phase-num{width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--orange);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.phase-title{font-size:20px;font-weight:800;color:white}
+.phase-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-top:2px}
+.phase-badge{margin-left:auto;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.pb-done{background:var(--green-light);color:var(--green)}
+.pb-now{background:var(--orange-light);color:var(--orange-dark)}
+.pb-next{background:var(--blue-light);color:var(--blue)}
+.pb-later{background:var(--gray-100);color:var(--gray-500)}
+
+/* CARDS */
+.card{background:white;border-radius:var(--radius-lg);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.card-inner{padding:18px 20px}
+.check-row{display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--gray-100);transition:background 0.15s;cursor:pointer}
+.check-row:last-child{border-bottom:none}
+.check-row:hover{background:var(--gray-50)}
+.check-row.done{background:var(--green-light)}
+.check-row.done .check-label{text-decoration:line-through;color:var(--gray-500)}
+.check-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--gray-300);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer}
+.check-box.checked{background:var(--green);border-color:var(--green);color:white;font-size:13px}
+.check-label{font-size:14px;font-weight:600;color:var(--gray-900);line-height:1.4}
+.check-meta{font-size:12px;color:var(--gray-500);margin-top:3px;line-height:1.5}
+.check-right{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.cost-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.cost-free{background:#f0fdf4;color:var(--green)}
+.cost-paid{background:#fef9c3;color:#854d0e}
+.cost-time{background:var(--blue-light);color:var(--blue)}
+.time-tag{font-size:11px;color:var(--gray-500)}
+.link-tag{font-size:11px;color:var(--blue);font-weight:600;text-decoration:none}
+.link-tag:hover{text-decoration:underline}
+
+/* TERMINAL BLOCKS */
+.terminal-block{background:#0d1117;border-radius:var(--radius);margin:12px 20px;overflow:hidden;font-family:'SF Mono','Fira Code',monospace}
+.terminal-header{background:#161b22;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.terminal-dots{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.terminal-label{font-size:11px;color:#6e7681;font-weight:600;letter-spacing:0.5px}
+.copy-btn{font-size:11px;background:rgba(255,255,255,0.08);color:#8b949e;border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px;cursor:pointer;transition:all 0.2s;font-family:inherit}
+.copy-btn:hover{background:rgba(255,255,255,0.15);color:white}
+.copy-btn.copied{background:rgba(22,163,74,0.2);color:#4ade80;border-color:rgba(22,163,74,0.3)}
+.terminal-body{padding:16px 20px;overflow-x:auto}
+.terminal-body::-webkit-scrollbar{height:4px}
+.terminal-body::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+pre{font-family:'SF Mono','Fira Code',monospace;font-size:13px;line-height:1.7;color:#e6edf3}
+.cmd{color:#79c0ff}
+.cmt{color:#8b949e}
+.str{color:#a5d6ff}
+.ok{color:#56d364}
+.warn{color:#e3b341}
+.var{color:#ff7b72}
+
+/* FORM LIBRARY */
+.form-card{background:white;border-radius:var(--radius);padding:16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.form-icon{font-size:24px;flex-shrink:0;width:40px;text-align:center}
+.form-body{flex:1}
+.form-name{font-size:14px;font-weight:700;color:var(--gray-900)}
+.form-desc{font-size:12px;color:var(--gray-500);margin-top:3px;line-height:1.5}
+.form-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.form-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+.open-btn{background:var(--navy);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
+.open-btn:hover{background:var(--navy-mid)}
+
+/* INFO BOX */
+.info-box{background:var(--blue-light);border:1px solid #bfdbfe;border-radius:var(--radius);padding:14px 16px;font-size:13px;color:#1e40af;margin:12px 20px;line-height:1.6}
+.warn-box{background:var(--yellow-light);border:1px solid #fde047;border-radius:var(--radius);padding:14px 16px;font-size:13px;color:#854d0e;margin:12px 20px;line-height:1.6}
+.success-box{background:var(--green-light);border:1px solid #bbf7d0;border-radius:var(--radius);padding:14px 16px;font-size:13px;color:#166534;margin:12px 20px;line-height:1.6}
+
+/* TABLE */
+.info-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.info-table th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.info-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top}
+.info-table tr:hover td{background:var(--gray-50)}
+
+/* SECTION DIVIDER */
+.section-divider{text-align:center;margin:40px 0 28px;color:rgba(255,255,255,0.15);font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+
+/* FOOTER */
+.footer{text-align:center;padding:32px 20px;color:rgba(255,255,255,0.3);font-size:13px}
+.footer strong{color:var(--orange)}
+
+/* RESPONSIVE */
+@media(max-width:600px){.score-display{flex-direction:column;text-align:center}.score-info{text-align:center}.check-right{display:none}}
+</style>
+</head>
+<body>
+
+<!-- HERO / SCORE -->
+<div class="hero">
+  <div class="hero-badge">ACoolECOSYSTEM · Launch Manifest v1.0</div>
+  <h1 class="hero-title">Everything you need to<br><span>launch ACoolAGENT</span></h1>
+  <p class="hero-sub">Terminal commands, paperwork, APIs, legal filings, and board outreach — tailored to your exact Mac setup. Check items off as you complete them.</p>
+  <div class="score-display">
+    <div class="score-big" id="score-num">0.0</div>
+    <div class="score-info">
+      <div class="score-label">Launch Score</div>
+      <div class="score-status" id="score-status">Begin checking items to track progress</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
+      <div class="score-count" id="score-count">0 of <span id="total-items">0</span> items complete</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 0 — SYSTEM READY
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 0</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">0</div>
+    <div>
+      <div class="phase-title">System Prep — Your Mac Terminal</div>
+      <div class="phase-sub">One-time setup · 15 minutes · All commands copy-paste ready</div>
+    </div>
+    <div class="phase-badge pb-now">DO FIRST</div>
+  </div>
+
+  <div class="success-box">✅ <strong>Already installed on your Mac:</strong> Node.js (via nvm), npm, Git, Vercel CLI, Homebrew, Python 3. The webhook npm dependencies are already installed. You just need to switch to Node 20 and log into Vercel.</div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Set Node 20 as your default (required — your system is on v16.1)</div>
+        <div class="check-meta">Your webhook needs Node 18+. You have v20.19.0 installed via nvm. These commands make it permanent.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">2 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Set Node 20</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Switch to Node 20 (already installed on your machine)</span>
+<span class="cmd">nvm use 20</span>
+<span class="cmt"># Make Node 20 the default for all new terminal sessions</span>
+<span class="cmd">nvm alias default 20</span>
+<span class="cmt"># Verify — should show v20.19.0</span>
+<span class="cmd">node --version</span>
+<span class="ok"># Expected: v20.19.0</span>
+<span class="cmd">npm --version</span>
+<span class="ok"># Expected: 10.8.2</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Log into Vercel CLI</div>
+        <div class="check-meta">Vercel v52 is installed. Run this once — it opens your browser to authenticate with your Vercel account (or create a free one at vercel.com).</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">3 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Vercel Login</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Log into Vercel (opens browser — sign in with GitHub or email)</span>
+<span class="cmd">vercel login</span>
+<span class="cmt"># After login, verify it worked</span>
+<span class="cmd">vercel whoami</span>
+<span class="ok"># Should show your Vercel username</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Install ngrok (for local webhook testing before deploying)</div>
+        <div class="check-meta">ngrok creates a public HTTPS URL tunneled to your laptop — lets you test the WhatsApp webhook without deploying to Vercel first.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">2 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Install ngrok</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Install ngrok via Homebrew (already installed on your Mac)</span>
+<span class="cmd">brew install ngrok/ngrok/ngrok</span>
+<span class="cmt"># Sign up free at ngrok.com, then authenticate:</span>
+<span class="cmd">ngrok config add-authtoken YOUR_NGROK_TOKEN</span>
+<span class="ok"># Replace YOUR_NGROK_TOKEN with the token from your ngrok dashboard</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Verify webhook dependencies are installed</div>
+        <div class="check-meta">Dependencies (express + @anthropic-ai/sdk) were already installed. This confirms everything is clean.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">1 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Verify Deps</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Navigate to the webhook folder</span>
+<span class="cmd">cd ~/Desktop/ACooAGENT/whatsapp-webhook</span>
+<span class="cmt"># Confirm node_modules is there</span>
+<span class="cmd">ls node_modules | head -5</span>
+<span class="ok"># Should list: @anthropic-ai, express, etc.</span>
+<span class="cmt"># Quick health check — should print server ready message</span>
+<span class="cmd">node -e "import('./server.js').then(()=>console.log('✅ Server imports OK')).catch(e=>console.error(e.message))"</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 1 — LEGAL FOUNDATION
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 1</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">1</div>
+    <div>
+      <div class="phase-title">Legal Foundation — Entity Formation</div>
+      <div class="phase-sub">CA filings + IRS registrations · Weeks 1–4 · Do these in order</div>
+    </div>
+    <div class="phase-badge pb-now">URGENT</div>
+  </div>
+
+  <div class="warn-box">⚠️ <strong>Order matters.</strong> Form ACoolHOLDINGS LLC first — everything else hangs under it. Don't form the nonprofits until the holding company is active.</div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File ACoolHOLDINGS LLC — CA Secretary of State</div>
+        <div class="check-meta">Form LLC-1 (Articles of Organization). File online at bizfile.sos.ca.gov. Manager-managed. Keith McPherson as Manager. ACoolTRUST as member.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$70 filing fee</span><span class="time-tag">1–3 days online</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File Statement of Information for ACoolHOLDINGS (SI-100)</div>
+        <div class="check-meta">Required within 90 days of LLC formation. Lists principal office, agent, managers. File at bizfile.sos.ca.gov.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$20</span><span class="time-tag">Same day online</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Get EIN for ACoolHOLDINGS — IRS Online</div>
+        <div class="check-meta">Apply at IRS.gov → Apply for an EIN Online. Select "LLC" → "1 member" or "multi-member." Free, instant. You'll need the LLC Articles of Organization first.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">10 minutes</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File ACoolBUSINESS S-Corp — CA Secretary of State</div>
+        <div class="check-meta">Form ARTS-GS (Articles of Incorporation). Then file IRS Form 2553 to elect S-Corp status within 75 days of incorporation.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$100 + $20 SI</span><span class="time-tag">3–5 days</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File IRS Form 2553 — S-Corp Election for ACoolBUSINESS</div>
+        <div class="check-meta">Must file within 75 days of incorporating ACoolBUSINESS, OR by March 15 of the current tax year. Mail or fax to IRS. Free to file.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE to file</span><span class="time-tag">File immediately after incorporating</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File ACoolNERD S-Corp — CA Secretary of State (same process)</div>
+        <div class="check-meta">Keith's primary consulting vehicle. Same process as ACoolBUSINESS: Articles of Incorporation + S-Corp election Form 2553. This generates immediate revenue.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$100 + $20 SI</span><span class="time-tag">3–5 days</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Register Fictitious Business Names (FBN) — LA County Registrar</div>
+        <div class="check-meta">Required if operating under a name other than exact legal entity name. File at lavote.gov/home/county-clerk/business-filings. Each entity needing a DBA needs its own filing.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">~$26 + $20/extra name</span><span class="time-tag">Same day</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Get City of LA Business Tax Registration Certificate</div>
+        <div class="check-meta">Required to operate any business within LA city limits. File online at finance.lacity.gov/businesstax. One certificate per business location.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">~$100–300/yr</span><span class="time-tag">1–2 weeks</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Open Business Banking Account for ACoolHOLDINGS</div>
+        <div class="check-meta">Bring: LLC Articles of Organization, EIN letter, Operating Agreement, and your ID. Chase Business, Bank of America, or Mercury (online, easiest) all work.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE (Mercury) or $0–15/mo</span><span class="time-tag">Same day</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Draft ACoolHOLDINGS Operating Agreement</div>
+        <div class="check-meta">Manager-managed LLC. Names ACoolTRUST as member, Keith McPherson as Manager. Includes distribution guidelines, decision-making thresholds, entity governance. Get a template from Pegi Matsuda (board consultant) or use an attorney.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$500–1,500 attorney</span><span class="time-tag">1 week</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div style="padding:16px 20px;background:var(--gray-50);border-radius:0">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gray-500);margin-bottom:12px">LEGAL FILING QUICK REFERENCE</div>
+      <table class="info-table">
+        <thead><tr><th>Entity</th><th>Form</th><th>Where to File</th><th>Cost</th><th>Timeline</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ACoolHOLDINGS</strong></td><td>LLC-1 (Articles)</td><td>bizfile.sos.ca.gov</td><td>$70</td><td>1–3 days</td></tr>
+          <tr><td><strong>ACoolHOLDINGS</strong></td><td>SI-100 (Statement of Info)</td><td>bizfile.sos.ca.gov</td><td>$20</td><td>Same day</td></tr>
+          <tr><td><strong>ACoolHOLDINGS</strong></td><td>SS-4 (EIN Application)</td><td>IRS.gov</td><td>FREE</td><td>Instant</td></tr>
+          <tr><td><strong>ACoolBUSINESS</strong></td><td>ARTS-GS (Articles of Inc)</td><td>bizfile.sos.ca.gov</td><td>$100</td><td>3–5 days</td></tr>
+          <tr><td><strong>ACoolBUSINESS</strong></td><td>Form 2553 (S-Corp Election)</td><td>IRS (mail/fax)</td><td>FREE</td><td>60 days IRS</td></tr>
+          <tr><td><strong>ACoolNERD</strong></td><td>ARTS-GS + Form 2553</td><td>bizfile.sos.ca.gov + IRS</td><td>$100</td><td>3–5 days</td></tr>
+          <tr><td><strong>All Entities</strong></td><td>City Tax Registration</td><td>finance.lacity.gov</td><td>~$100–300/yr</td><td>1–2 weeks</td></tr>
+          <tr><td><strong>ACoolACADEMY</strong></td><td>Form 1023-EZ (501c3)</td><td>Pay.gov → IRS</td><td>$275</td><td>1–3 months</td></tr>
+          <tr><td><strong>ACoolCAUSE</strong></td><td>Form 1023 or 1023-EZ</td><td>Pay.gov → IRS</td><td>$275 or $600</td><td>3–6 months</td></tr>
+          <tr><td><strong>ACoolBOARD</strong></td><td>Form 1024 (501c6)</td><td>Pay.gov → IRS</td><td>$600</td><td>3–6 months</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 2 — ACCOUNTS & APIS
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 2</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">2</div>
+    <div>
+      <div class="phase-title">Accounts & API Keys</div>
+      <div class="phase-sub">3 accounts to create · ~1 hour total · These unlock WhatsApp deployment</div>
+    </div>
+    <div class="phase-badge pb-now">THIS WEEK</div>
+  </div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Create Anthropic Account + Get API Key</div>
+        <div class="check-meta">Go to console.anthropic.com → Sign up → API Keys → Create Key. Name it "ACoolAGENT-WhatsApp". Add a payment method (pay-as-you-go, ~$3/1M tokens). Save the key — you'll only see it once.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">~$10–30/mo at launch</span><span class="time-tag">10 min</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Create Meta Developer App + WhatsApp Business Account</div>
+        <div class="check-meta">Go to developers.facebook.com → Create App → Business → Add WhatsApp product → API Setup. Get your Phone Number ID and temporary access token. You'll also need a Meta Business Manager account linked to your business.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">~$15–40/mo at scale</span><span class="time-tag">30 min</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Create or log into Vercel account at vercel.com</div>
+        <div class="check-meta">Sign up with GitHub (recommended — easier deployments). Free Hobby tier supports the webhook. You already have Vercel CLI installed — just need an account to deploy to.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE (Hobby tier)</span><span class="time-tag">5 min</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Create .env file from .env.example in webhook folder</div>
+        <div class="check-meta">Copy the example file and fill in your real keys. Never commit this file to git — it's already in .gitignore.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">5 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Create .env File</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmd">cd ~/Desktop/ACooAGENT/whatsapp-webhook</span>
+<span class="cmt"># Copy the template</span>
+<span class="cmd">cp .env.example .env</span>
+<span class="cmt"># Open in default editor to fill in your keys</span>
+<span class="cmd">open -e .env</span>
+<span class="cmt"># OR open in VS Code if you have it:</span>
+<span class="cmd">code .env</span>
+<span class="cmt">
+# Fill these in:
+# ANTHROPIC_API_KEY=sk-ant-...your-key...
+# WHATSAPP_ACCESS_TOKEN=EAAx...your-token...
+# WHATSAPP_PHONE_NUMBER_ID=12345...
+# WHATSAPP_VERIFY_TOKEN=acoolagent_verify_2025</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 3 — DEPLOY WHATSAPP WEBHOOK
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 3</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">3</div>
+    <div>
+      <div class="phase-title">Deploy ACoolAGENT on WhatsApp</div>
+      <div class="phase-sub">Local test → Vercel deploy → Connect Meta webhook · ~45 minutes</div>
+    </div>
+    <div class="phase-badge pb-next">WEEK 2</div>
+  </div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Test locally with ngrok (run in 2 separate terminal tabs)</div>
+        <div class="check-meta">Tab 1: start your server. Tab 2: start ngrok tunnel. Copy the ngrok URL — this is your temporary webhook URL for Meta testing.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">10 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal Tab 1 — Start Server</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmd">cd ~/Desktop/ACooAGENT/whatsapp-webhook</span>
+<span class="cmd">nvm use 20</span>
+<span class="cmd">npm run dev</span>
+<span class="ok"># Expected: 🚀 ACoolAGENT running on port 3000</span></pre></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal Tab 2 — Start ngrok Tunnel</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Open a NEW terminal tab (Cmd+T), then:</span>
+<span class="cmd">ngrok http 3000</span>
+<span class="ok"># Copy the https://xxxx.ngrok.io URL shown
+# This is your webhook URL for Meta testing</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Verify local webhook works — test the health endpoint</div>
+        <div class="check-meta">With server + ngrok running, test the health endpoint. Should return a JSON response with status "ok".</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">1 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Test Health Endpoint</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Replace XXXX with your ngrok subdomain</span>
+<span class="cmd">curl https://XXXX.ngrok.io/health</span>
+<span class="ok"># Expected: {"status":"ok","service":"ACoolAGENT WhatsApp Backend","model":"claude-sonnet-4-6",...}</span>
+<span class="cmt"># Also test the Meta verification endpoint:</span>
+<span class="cmd">curl "https://XXXX.ngrok.io/webhook?hub.mode=subscribe&hub.verify_token=acoolagent_verify_2025&hub.challenge=test123"</span>
+<span class="ok"># Expected: test123</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Connect webhook to Meta Developer Console</div>
+        <div class="check-meta">In Meta Developer Console → Your App → WhatsApp → Configuration → Webhook: paste your ngrok URL + set verify token to "acoolagent_verify_2025" → Subscribe to "messages" field.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">5 min</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Send test WhatsApp message to your business number</div>
+        <div class="check-meta">Add your WhatsApp number as a test number in Meta Console. Send "START" from a personal WhatsApp. Should receive the onboarding message back within 2 seconds.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">5 min</span></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Deploy to Vercel production</div>
+        <div class="check-meta">Once local test passes, deploy to Vercel. The first command deploys and gives you a URL. Then set all environment variables one by one. Then redeploy for production.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE (Hobby)</span><span class="time-tag">10 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Deploy to Vercel</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmd">cd ~/Desktop/ACooAGENT/whatsapp-webhook</span>
+<span class="cmd">nvm use 20</span>
+<span class="cmt"># Deploy (first time — follow prompts: link to your Vercel account)</span>
+<span class="cmd">vercel</span>
+<span class="cmt"># Set environment variables (run each one — paste value when prompted)</span>
+<span class="cmd">vercel env add ANTHROPIC_API_KEY</span>
+<span class="cmd">vercel env add WHATSAPP_ACCESS_TOKEN</span>
+<span class="cmd">vercel env add WHATSAPP_PHONE_NUMBER_ID</span>
+<span class="cmd">vercel env add WHATSAPP_VERIFY_TOKEN</span>
+<span class="cmt"># Deploy to production with all env vars</span>
+<span class="cmd">vercel --prod</span>
+<span class="ok"># Your production URL: https://acoolagent-whatsapp-webhook.vercel.app
+# Update Meta webhook callback URL to this production URL</span></pre></div>
+    </div>
+
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Update Meta webhook to Vercel production URL</div>
+        <div class="check-meta">In Meta Console → WhatsApp → Configuration → edit the webhook URL from ngrok to your new vercel.app URL. Re-verify. Test again with a real WhatsApp message.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">5 min</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 4 — BOARD CAMPAIGN
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 4</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">4</div>
+    <div>
+      <div class="phase-title">Board Engagement Campaign</div>
+      <div class="phase-sub">14 real board members · Pre-drafted emails · YES/NO tracker in dashboard</div>
+    </div>
+    <div class="phase-badge pb-now">THIS WEEK</div>
+  </div>
+
+  <div class="info-box">📋 <strong>All 14 outreach emails are already drafted</strong> in the Board Hub tab of the master dashboard. Open it, go to Board Hub, hit "Open in Mail" for each member to launch your email client with a pre-filled, personalized email. Takes ~20 minutes to send all 14.</div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Send outreach to Kenn Phillips (Chair) — first, most important</div>
+        <div class="check-meta">Valley Economic Alliance. Already on your board as Chair. Confirm his active engagement and get calendar invite for first board meeting.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">Email</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Send outreach to Dennis Zine (Vice Chair)</div>
+        <div class="check-meta">LA City Council / LAPD. Regulatory affairs anchor. Confirm role and entity focus (ACoolBUSINESS, ACoolENTERPRISE).</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">Email</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Send outreach to Kecia Washington (Secretary/Treasurer)</div>
+        <div class="check-meta">LADWP. Financial oversight lead. Needs to be looped into ACoolENDOWMENT and ACoolGRANT early.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">Email</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Send outreach to all remaining 11 board members</div>
+        <div class="check-meta">Use Board Hub tab in dashboard → "Open in Mail" button on each card. Track YES/NO responses in dashboard. Target: 80%+ response rate in 7 days.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">Email</span><span class="time-tag">20 min</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Schedule first ACoolHOLDINGS board meeting (within 30 days)</div>
+        <div class="check-meta">Calendar invite to all confirmed YES members. Agenda: entity formation status, Q1 priorities, ACoolAGENT demo, revenue targets. Use Google Meet or Zoom.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">30 days</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Share master dashboard with confirmed board members</div>
+        <div class="check-meta">Email the ACoolECOSYSTEM_master_dashboard.html file to confirmed board members so they have visibility into org structure, roadmap, and priorities before the first meeting.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 5 — 501c3 & NONPROFIT FILINGS
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 5</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">5</div>
+    <div>
+      <div class="phase-title">501c3 & Nonprofit Filings</div>
+      <div class="phase-sub">After ACoolHOLDINGS is active · Weeks 5–8</div>
+    </div>
+    <div class="phase-badge pb-next">AFTER PHASE 1</div>
+  </div>
+
+  <div class="warn-box">⚠️ Do NOT start 501c3 filings until ACoolHOLDINGS LLC is active and you have its EIN. The nonprofits need a parent entity address and governance structure already in place.</div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Incorporate ACoolACADEMY as CA Nonprofit Public Benefit Corporation</div>
+        <div class="check-meta">File Articles of Incorporation (Nonprofit) at bizfile.sos.ca.gov. Choose "Public Benefit Corporation" for educational nonprofit. Then file IRS Form 1023-EZ (eligible if projected revenue under $50K/yr in first 3 years).</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$30 + $275 IRS</span><span class="time-tag">1–3 months IRS</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File CA Form 3500A — State Franchise Tax exemption for ACoolACADEMY</div>
+        <div class="check-meta">After IRS 501c3 determination letter arrives, file FTB Form 3500A with CA Franchise Tax Board to get state tax exemption. Required for CA tax-exempt status.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">After IRS approval</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Register ACoolACADEMY with CA Attorney General Registry of Charitable Trusts</div>
+        <div class="check-meta">Required in California for all charitable organizations soliciting donations. File Form CT-1 at oag.ca.gov/charities. Must file before soliciting any donations in CA.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">Before fundraising</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Repeat 501c3 process for ACoolCAUSE and ACoolGRANT</div>
+        <div class="check-meta">Same process: CA nonprofit incorporation + IRS Form 1023 or 1023-EZ + FTB 3500A + AG Registry. If projected revenue is over $50K, use full Form 1023 ($600 IRS fee).</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$30 + $275–600/each</span><span class="time-tag">3–6 months</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">File ACoolBOARD as 501c6 (Business League) — IRS Form 1024</div>
+        <div class="check-meta">Trade associations and business leagues use 501c6. IRS Form 1024 (online via Pay.gov). Requires evidence of industry-wide benefit, not just members.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-paid">$600 IRS</span><span class="time-tag">3–6 months</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 6 — REVENUE SPRINT
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 6</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">6</div>
+    <div>
+      <div class="phase-title">Revenue Sprint — $10K in 30 Days</div>
+      <div class="phase-sub">ACoolNERD + ACoolBUSINESS · No entity formation needed to start billing</div>
+    </div>
+    <div class="phase-badge pb-now">PARALLEL — START NOW</div>
+  </div>
+
+  <div class="warn-box">⚠️ <strong>This runs parallel to Phases 1–3.</strong> You do NOT need ACoolHOLDINGS to be formed before billing clients through ACoolNERD. Your S-Corp provides the invoicing vehicle. Generate revenue NOW.</div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Define your $2,500–$5,000 consulting package for ACoolNERD</div>
+        <div class="check-meta">Concrete deliverable: "ACoolECOSYSTEM Setup Sprint — Entity formation roadmap + WhatsApp AI agent setup + board recruitment strategy. 2 weeks, $3,500 flat." This is a product, not a vague consulting retainer.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">Zero cost</span><span class="time-tag">1 hour to define</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Build a one-page service offering (use Canva or Google Docs)</div>
+        <div class="check-meta">Name: "ACoolNERD Business Launch Sprint." Problem → Solution → What's included → Price → Call to action. One page. Send as PDF.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">2 hours</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Contact 10 warm leads — people who already know and trust you</div>
+        <div class="check-meta">Text/call, not email. "Hey, I just built something that I think could seriously help your business get off the ground. Can I share a 2-minute overview?" Get 3 conversations. Close 1.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE</span><span class="time-tag">This week</span></div>
+    </div>
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Create invoice via Wave (free) or Stripe and send to first client</div>
+        <div class="check-meta">Wave.app or stripe.com — both free to create. Issue invoice under "ACoolNERD" or "Keith McPherson DBA ACoolNERD." Collect 50% upfront. That's your first revenue.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE invoicing</span><span class="time-tag">30 min setup</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Set Up Free Invoicing (Wave)</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmt"># Open Wave free invoicing in browser</span>
+<span class="cmd">open https://www.waveapps.com</span>
+<span class="cmt"># OR set up Stripe for professional online payments</span>
+<span class="cmd">open https://dashboard.stripe.com/register</span>
+<span class="cmt"># Stripe sends payment links via text/email — no website needed</span>
+<span class="ok"># Create account → Products → Add price → Share payment link</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PHASE 7 — GIT & VERSION CONTROL
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Phase 7</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">7</div>
+    <div>
+      <div class="phase-title">Git Repository — Protect Your Work</div>
+      <div class="phase-sub">Version control + GitHub backup · 15 minutes · One-time setup</div>
+    </div>
+    <div class="phase-badge pb-next">WEEK 1</div>
+  </div>
+
+  <div class="card">
+    <div class="check-row" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div>
+        <div class="check-label">Initialize git and create GitHub repository for ACoolAGENT</div>
+        <div class="check-meta">Your git is already configured as ACoolNERD / iAm@ACoolNERD.com. Create a private GitHub repo and push your webhook code. Never commit .env files.</div>
+      </div>
+      <div class="check-right"><span class="cost-tag cost-free">FREE (private repo)</span><span class="time-tag">10 min</span></div>
+    </div>
+    <div class="terminal-block">
+      <div class="terminal-header">
+        <div class="terminal-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="terminal-label">Terminal — Git Setup & GitHub Push</div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+      </div>
+      <div class="terminal-body"><pre><span class="cmd">cd ~/Desktop/ACooAGENT/whatsapp-webhook</span>
+<span class="cmt"># Initialize git repo</span>
+<span class="cmd">git init</span>
+<span class="cmt"># Create .gitignore (protects your .env and node_modules)</span>
+<span class="cmd">cat > .gitignore << 'EOF'
+.env
+node_modules/
+.vercel/
+*.log
+EOF</span>
+<span class="cmt"># Stage all files (NOT .env — it's gitignored)</span>
+<span class="cmd">git add .</span>
+<span class="cmd">git commit -m "Initial ACoolAGENT WhatsApp webhook"</span>
+<span class="cmt"># Create GitHub repo (install gh CLI if needed: brew install gh)</span>
+<span class="cmd">gh repo create ACoolAGENT-webhook --private --source=. --remote=origin --push</span>
+<span class="ok"># Repo created and pushed at github.com/ACoolNERD/ACoolAGENT-webhook</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAPERWORK LIBRARY
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Paperwork Library</div>
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">📄</div>
+    <div>
+      <div class="phase-title">All Forms — Direct Links</div>
+      <div class="phase-sub">Click to open each form in your browser</div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🏢</div>
+    <div class="form-body">
+      <div class="form-name">LLC-1 — Articles of Organization (CA)</div>
+      <div class="form-desc">Forms ACoolHOLDINGS LLC with California Secretary of State. Manager-managed. This is your most urgent filing.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$70</span><span class="cost-tag cost-time">Online: 1–3 days</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://bizfile.sos.ca.gov" target="_blank">Open Filing Site ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">📋</div>
+    <div class="form-body">
+      <div class="form-name">SS-4 — EIN Application (IRS)</div>
+      <div class="form-desc">Apply for Employer Identification Number for any entity. Free, instant online. You need one per entity.</div>
+      <div class="form-meta"><span class="cost-tag cost-free">FREE</span><span class="cost-tag cost-time">Instant</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online" target="_blank">Apply Now ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🏛️</div>
+    <div class="form-body">
+      <div class="form-name">ARTS-GS — Articles of Incorporation (CA Corp)</div>
+      <div class="form-desc">For ACoolBUSINESS and ACoolNERD S-Corps. File at CA SOS bizfile portal.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$100</span><span class="cost-tag cost-time">3–5 days</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://bizfile.sos.ca.gov" target="_blank">Open Filing Site ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">📊</div>
+    <div class="form-body">
+      <div class="form-name">Form 2553 — S-Corporation Election (IRS)</div>
+      <div class="form-desc">Elects S-Corp tax status for ACoolBUSINESS and ACoolNERD. Must file within 75 days of incorporating. Mail or fax to IRS.</div>
+      <div class="form-meta"><span class="cost-tag cost-free">FREE</span><span class="cost-tag cost-time">File immediately after incorporating</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.irs.gov/forms-pubs/about-form-2553" target="_blank">Get Form ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🏪</div>
+    <div class="form-body">
+      <div class="form-name">FBN — Fictitious Business Name (LA County)</div>
+      <div class="form-desc">Required to do business under a name that differs from your legal entity name. File at LA County Registrar-Recorder.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$26 + publication</span><span class="cost-tag cost-time">Same day</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://lavote.gov/home/county-clerk/business-filings" target="_blank">File FBN ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🏙️</div>
+    <div class="form-body">
+      <div class="form-name">City of LA Business Tax Registration</div>
+      <div class="form-desc">Required to operate within LA city limits. Tax rate based on gross receipts. Annual renewal.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">~$100–300/yr</span><span class="cost-tag cost-time">1–2 weeks</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://finance.lacity.gov/businesstax" target="_blank">Register ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">❤️</div>
+    <div class="form-body">
+      <div class="form-name">Form 1023-EZ — 501c3 Streamlined Application (IRS)</div>
+      <div class="form-desc">For ACoolACADEMY (if projected annual revenue under $50K in first 3 years). Simpler and cheaper than full Form 1023. File via Pay.gov.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$275</span><span class="cost-tag cost-time">1–3 months IRS approval</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.irs.gov/charities-non-profits/form-1023-ez-streamlined-application-for-recognition-of-exemption" target="_blank">Get Form ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">📝</div>
+    <div class="form-body">
+      <div class="form-name">Form 1023 — Full 501c3 Application (IRS)</div>
+      <div class="form-desc">For ACoolCAUSE, ACoolGRANT, ACoolHEALTH if expected revenues exceed $50K. More detailed but stronger protection. File via Pay.gov.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$600</span><span class="cost-tag cost-time">3–6 months</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.irs.gov/forms-pubs/about-form-1023" target="_blank">Get Form ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🤝</div>
+    <div class="form-body">
+      <div class="form-name">Form 1024 — 501c6 Application (IRS)</div>
+      <div class="form-desc">For ACoolBOARD as a business league / trade association. Requires evidence of serving an entire industry, not just members. File via Pay.gov.</div>
+      <div class="form-meta"><span class="cost-tag cost-paid">$600</span><span class="cost-tag cost-time">3–6 months</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.irs.gov/forms-pubs/about-form-1024" target="_blank">Get Form ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">🌲</div>
+    <div class="form-body">
+      <div class="form-name">FTB Form 3500A — CA State Tax Exemption</div>
+      <div class="form-desc">After receiving IRS 501c3 determination letter, file with CA Franchise Tax Board for state tax exemption. Required for CA-exempt status.</div>
+      <div class="form-meta"><span class="cost-tag cost-free">FREE</span><span class="cost-tag cost-time">After IRS approval</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://www.ftb.ca.gov/forms/2023/2023-3500a.html" target="_blank">Get Form ↗</a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-icon">⚖️</div>
+    <div class="form-body">
+      <div class="form-name">CT-1 — CA AG Registry of Charitable Trusts</div>
+      <div class="form-desc">Required in CA before soliciting any charitable donations. File with CA Attorney General's office. Annual renewal (Form RRF-1).</div>
+      <div class="form-meta"><span class="cost-tag cost-free">FREE</span><span class="cost-tag cost-time">Before any fundraising</span></div>
+    </div>
+    <div class="form-right">
+      <a class="open-btn" href="https://oag.ca.gov/charities/forms" target="_blank">File CT-1 ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TOTAL COST SUMMARY
+══════════════════════════════════════════════════════ -->
+<div class="section-divider">Cost Summary</div>
+<div class="phase">
+  <div class="card">
+    <div style="padding:16px 20px">
+      <div style="font-size:14px;font-weight:700;color:var(--gray-700);margin-bottom:14px">Estimated Launch Budget</div>
+      <table class="info-table">
+        <thead><tr><th>Item</th><th>One-Time</th><th>Monthly</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ACoolHOLDINGS LLC filing</strong></td><td>$90</td><td>—</td><td>$70 Articles + $20 SI</td></tr>
+          <tr><td><strong>ACoolBUSINESS S-Corp</strong></td><td>$120</td><td>—</td><td>$100 Articles + $20 SI</td></tr>
+          <tr><td><strong>ACoolNERD S-Corp</strong></td><td>$120</td><td>—</td><td>Same as above</td></tr>
+          <tr><td><strong>EIN applications (×3)</strong></td><td>FREE</td><td>—</td><td>IRS online</td></tr>
+          <tr><td><strong>FBN registrations</strong></td><td>~$150</td><td>—</td><td>~$26 × 5 + publication</td></tr>
+          <tr><td><strong>City Tax Registration (×3)</strong></td><td>~$600</td><td>~$300/yr</td><td>Per operating entity</td></tr>
+          <tr><td><strong>ACoolACADEMY 501c3 (1023-EZ)</strong></td><td>$305</td><td>—</td><td>$30 CA + $275 IRS</td></tr>
+          <tr><td><strong>Operating Agreement (attorney)</strong></td><td>$500–1,500</td><td>—</td><td>One-time legal</td></tr>
+          <tr><td><strong>Anthropic API (Claude)</strong></td><td>—</td><td>~$10–30</td><td>Pay-as-you-go</td></tr>
+          <tr><td><strong>WhatsApp Business API</strong></td><td>—</td><td>~$15–40</td><td>1K conversations</td></tr>
+          <tr><td><strong>Vercel (webhook hosting)</strong></td><td>—</td><td>FREE</td><td>Hobby tier</td></tr>
+          <tr><td><strong>Business banking</strong></td><td>—</td><td>FREE–$15</td><td>Mercury = free</td></tr>
+          <tr><td style="font-weight:800;color:var(--navy)">TOTAL ESTIMATED</td><td style="font-weight:800;color:var(--orange)">~$1,885–2,885</td><td style="font-weight:800;color:var(--orange)">~$25–85</td><td>Excluding attorneys</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- end wrapper -->
+
+<div class="footer">
+  <strong>ACoolECOSYSTEM Launch Manifest</strong> · Keith McPherson / ACoolNERD · iam@acoolnerd.com<br>
+  Tailored to your Mac: nvm v20.19.0, Vercel v52, Homebrew, Git configured as ACoolNERD
+</div>
+
+<script>
+// ==================== SCORE SYSTEM ====================
+let totalItems = 0;
+let checkedItems = 0;
+
+function toggle(row) {
+  const box = row.querySelector('.check-box');
+  const checked = box.classList.contains('checked');
+  if (checked) {
+    box.classList.remove('checked');
+    box.textContent = '';
+    row.classList.remove('done');
+    checkedItems = Math.max(0, checkedItems - 1);
+  } else {
+    box.classList.add('checked');
+    box.textContent = '✓';
+    row.classList.add('done');
+    checkedItems++;
+  }
+  updateScore();
+}
+
+function updateScore() {
+  const pct = totalItems > 0 ? checkedItems / totalItems : 0;
+  const score = (pct * 10).toFixed(1);
+  const scoreEl = document.getElementById('score-num');
+  const statusEl = document.getElementById('score-status');
+  const barEl = document.getElementById('score-bar');
+  const countEl = document.getElementById('score-count');
+
+  scoreEl.textContent = score;
+  barEl.style.width = (pct * 100) + '%';
+  countEl.innerHTML = `${checkedItems} of <span id="total-items">${totalItems}</span> items complete`;
+
+  if (pct === 0) {
+    statusEl.textContent = 'Begin checking items to track progress';
+    scoreEl.className = 'score-big';
+  } else if (pct < 0.3) {
+    statusEl.textContent = 'Getting started — keep going';
+    scoreEl.className = 'score-big';
+  } else if (pct < 0.5) {
+    statusEl.textContent = 'Building momentum — solid progress';
+    scoreEl.className = 'score-big';
+  } else if (pct < 0.7) {
+    statusEl.textContent = 'Halfway there — major milestones ahead';
+    scoreEl.className = 'score-big';
+  } else if (pct < 0.9) {
+    statusEl.textContent = 'Strong execution — nearly there';
+    scoreEl.className = 'score-big';
+  } else if (pct < 0.95) {
+    statusEl.textContent = 'Excellent — above 9.0 threshold!';
+    scoreEl.className = 'score-big';
+  } else {
+    statusEl.textContent = '🎉 9.5+ ACHIEVED — ACoolAGENT IS LIVE!';
+    scoreEl.className = 'score-big ready';
+  }
+}
+
+// Count all check-rows on load
+window.addEventListener('DOMContentLoaded', () => {
+  totalItems = document.querySelectorAll('.check-row').length;
+  document.getElementById('total-items').textContent = totalItems;
+  document.getElementById('score-count').innerHTML = `0 of ${totalItems} items complete`;
+});
+
+// ==================== COPY BLOCKS ====================
+function copyBlock(btn) {
+  const pre = btn.closest('.terminal-block').querySelector('pre');
+  const text = pre.textContent
+    .replace(/# .*/g, '') // strip comments for cleaner copy
+    .split('\n')
+    .filter(l => l.trim() && !l.trim().startsWith('#'))
+    .join('\n')
+    .trim();
+
+  // Also copy with comments for context
+  const fullText = pre.textContent.trim();
+
+  navigator.clipboard?.writeText(fullText)
+    .then(() => {
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    })
+    .catch(() => {
+      // Fallback: select the text
+      const range = document.createRange();
+      range.selectNode(pre);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+}
+</script>
+</body>
+</html>

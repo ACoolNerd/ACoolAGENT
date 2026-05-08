@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables — NEVER commit real keys
+.env
+.env.local
+.env.production
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude internal
+.claude/
+
+# Temp / scratch files
+ZZZZ.json
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build output
+dist/
+build/
+.vercel/
