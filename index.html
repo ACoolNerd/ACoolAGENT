@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACoolAgent — AI-Powered Ecosystem Command Center</title>
+  <meta name="description" content="ACoolAgent: AI-powered WhatsApp assistant and ecosystem command center for ACoolECOSYSTEM." />
+  <meta property="og:title" content="ACoolAgent — ACoolECOSYSTEM Command Center" />
+  <meta property="og:description" content="AI-powered WhatsApp assistant + ecosystem orchestration hub." />
+  <meta property="og:url" content="https://acoolnerd.github.io/acoolagent" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Nav -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">ACoolAgent</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#agents">Agents</a>
+        <a href="#status">Status</a>
+        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-nav">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      ACoolECOSYSTEM · v1.0 · LIVE
+    </div>
+    <h1 class="hero-title">
+      Your Ecosystem.<br />
+      <span class="gradient-text">AI-Commanded.</span>
+    </h1>
+    <p class="hero-sub">
+      ACoolAgent is the central intelligence hub — powering WhatsApp automation,
+      sub-agent orchestration, and real-time ecosystem command across every
+      ACoolECOSYSTEM vertical.
+    </p>
+    <div class="hero-actions">
+      <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-primary">
+        <span>View on GitHub</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+      <a href="#features" class="btn-ghost">Explore Features</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num" id="counter-agents">0</span>
+        <span class="stat-label">AI Agents</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num" id="counter-pillars">0</span>
+        <span class="stat-label">Eco Pillars</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num" id="counter-uptime">0</span>
+        <span class="stat-label">% Uptime</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Grid -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <span class="section-tag">CAPABILITIES</span>
+      <h2>Everything your ecosystem needs</h2>
+      <p>From WhatsApp automation to multi-vertical orchestration — ACoolAgent handles it all.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card card-wide">
+        <div class="feature-icon">🤖</div>
+        <h3>WhatsApp AI Assistant</h3>
+        <p>Intelligent, context-aware responses powered by the ACoolECOSYSTEM knowledge base. Handles inquiries, bookings, and routing automatically.</p>
+        <div class="feature-tags">
+          <span class="tag">NLP</span>
+          <span class="tag">Auto-Route</span>
+          <span class="tag">24/7</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Agent Hierarchy</h3>
+        <p>Nested sub-agent system with role-based delegation and priority queuing.</p>
+        <div class="feature-tags">
+          <span class="tag">RBAC</span>
+          <span class="tag">Queue</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📡</div>
+        <h3>Real-Time Signals</h3>
+        <p>Webhook-driven event bus connecting all ACoolECOSYSTEM services with instant propagation.</p>
+        <div class="feature-tags">
+          <span class="tag">WebSocket</span>
+          <span class="tag">Events</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Analytics Dashboard</h3>
+        <p>Centralized metrics and KPIs across every vertical — revenue, engagement, agent performance.</p>
+        <div class="feature-tags">
+          <span class="tag">KPIs</span>
+          <span class="tag">Live</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Secure Access</h3>
+        <p>JWT-based auth with per-agent scoped permissions. Full audit trail on every action.</p>
+        <div class="feature-tags">
+          <span class="tag">JWT</span>
+          <span class="tag">Audit</span>
+        </div>
+      </div>
+      <div class="feature-card card-wide">
+        <div class="feature-icon">🌐</div>
+        <h3>Knowledge Base Integration</h3>
+        <p>Synced with ACoolKNOWLEDGEBASE for real-time context injection. Every agent response is grounded in your ecosystem's truth.</p>
+        <div class="feature-tags">
+          <span class="tag">RAG</span>
+          <span class="tag">Sync</span>
+          <span class="tag">Grounded</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agent Roster -->
+  <section class="agents" id="agents">
+    <div class="section-header">
+      <span class="section-tag">AGENT ROSTER</span>
+      <h2>Meet the ACoolAGENTS</h2>
+      <p>Each agent owns a specific domain within the ecosystem.</p>
+    </div>
+    <div class="agent-grid">
+      <div class="agent-card" style="--accent:#f97316">
+        <div class="agent-status online"></div>
+        <div class="agent-avatar">🧭</div>
+        <h4>ACoolCOMMANDER</h4>
+        <p>Top-level orchestrator. Routes tasks, manages priority queues, and enforces ecosystem-wide governance.</p>
+        <div class="agent-domain">Domain: Orchestration</div>
+      </div>
+      <div class="agent-card" style="--accent:#06b6d4">
+        <div class="agent-status online"></div>
+        <div class="agent-avatar">💬</div>
+        <h4>ACoolMESSENGER</h4>
+        <p>WhatsApp-native assistant. Handles inbound messages, qualifies leads, and routes to the right vertical.</p>
+        <div class="agent-domain">Domain: Communication</div>
+      </div>
+      <div class="agent-card" style="--accent:#8b5cf6">
+        <div class="agent-status online"></div>
+        <div class="agent-avatar">📚</div>
+        <h4>ACoolSCHOLAR</h4>
+        <p>Manages the ACoolKNOWLEDGEBASE. Indexes new content, surfaces relevant context, and keeps agents grounded.</p>
+        <div class="agent-domain">Domain: Knowledge</div>
+      </div>
+      <div class="agent-card" style="--accent:#10b981">
+        <div class="agent-status standby"></div>
+        <div class="agent-avatar">💰</div>
+        <h4>ACoolCFO</h4>
+        <p>Financial intelligence agent. Tracks revenue, flags anomalies, and generates ecosystem P&L summaries.</p>
+        <div class="agent-domain">Domain: Finance</div>
+      </div>
+      <div class="agent-card" style="--accent:#f43f5e">
+        <div class="agent-status standby"></div>
+        <div class="agent-avatar">🎯</div>
+        <h4>ACoolMARKETER</h4>
+        <p>Social media orchestration, content scheduling, and brand consistency enforcement across platforms.</p>
+        <div class="agent-domain">Domain: Marketing</div>
+      </div>
+      <div class="agent-card" style="--accent:#eab308">
+        <div class="agent-status standby"></div>
+        <div class="agent-avatar">🔬</div>
+        <h4>ACoolANALYST</h4>
+        <p>Data synthesis and insight generation. Turns raw ecosystem signals into actionable intelligence.</p>
+        <div class="agent-domain">Domain: Analytics</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Status -->
+  <section class="status-section" id="status">
+    <div class="section-header">
+      <span class="section-tag">SYSTEM STATUS</span>
+      <h2>Ecosystem Health</h2>
+      <p>Real-time infrastructure and service status across ACoolECOSYSTEM.</p>
+    </div>
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="status-row">
+          <span class="status-name">WhatsApp Gateway</span>
+          <span class="status-badge operational">Operational</span>
+        </div>
+        <div class="status-bar"><div class="status-fill" style="width:98%"></div></div>
+        <span class="status-uptime">98.7% uptime</span>
+      </div>
+      <div class="status-card">
+        <div class="status-row">
+          <span class="status-name">Agent Orchestrator</span>
+          <span class="status-badge operational">Operational</span>
+        </div>
+        <div class="status-bar"><div class="status-fill" style="width:100%"></div></div>
+        <span class="status-uptime">100% uptime</span>
+      </div>
+      <div class="status-card">
+        <div class="status-row">
+          <span class="status-name">Knowledge Base API</span>
+          <span class="status-badge operational">Operational</span>
+        </div>
+        <div class="status-bar"><div class="status-fill" style="width:99%"></div></div>
+        <span class="status-uptime">99.2% uptime</span>
+      </div>
+      <div class="status-card">
+        <div class="status-row">
+          <span class="status-name">Analytics Engine</span>
+          <span class="status-badge degraded">Building</span>
+        </div>
+        <div class="status-bar"><div class="status-fill degraded" style="width:62%"></div></div>
+        <span class="status-uptime">In Development</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>Ready to command your ecosystem?</h2>
+      <p>Fork the repo, configure your agents, and deploy in minutes.</p>
+      <div class="cta-actions">
+        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank" class="btn-primary">
+          <span>Star on GitHub</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </a>
+        <a href="https://github.com/ACoolNERD/acoolagent/issues" target="_blank" class="btn-ghost">Request a Feature</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">⚡</span>
+        <span>ACoolAgent</span>
+      </div>
+      <p class="footer-copy">Part of the <strong>ACoolECOSYSTEM</strong> · Built with purpose.</p>
+      <div class="footer-links">
+        <a href="https://github.com/ACoolNERD/acoolagent" target="_blank">GitHub</a>
+        <a href="https://github.com/ACoolNERD/acoolagent/issues" target="_blank">Issues</a>
+        <a href="https://github.com/ACoolNERD/acoolagent/blob/main/README.md" target="_blank">Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
