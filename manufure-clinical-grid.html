@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MANUFURE CLINICAL GRID — Hospital Intelligence Platform</title>
+<style>
+  :root {
+    --bg:       #050d1a;
+    --surface:  #091525;
+    --card:     #0c1e35;
+    --border:   #1a3a5c;
+    --accent:   #00c8ff;
+    --accent2:  #00ffb3;
+    --warn:     #ff9500;
+    --danger:   #ff3b3b;
+    --ok:       #00e676;
+    --muted:    #5a7a99;
+    --text:     #cce8ff;
+    --text2:    #7fa8cc;
+    --font:     'Courier New', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID LAYOUT ─────────────────────────────────── */
+  .shell {
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    grid-template-columns: 220px 1fr;
+    height: 100vh;
+  }
+  .topbar  { grid-column: 1/-1; }
+  .sidebar { grid-row: 2; overflow-y: auto; }
+  .main    { grid-row: 2; overflow-y: auto; padding: 16px; }
+
+  /* ── TOPBAR ──────────────────────────────────────── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 20px;
+    background: linear-gradient(90deg, #050d1a 0%, #091525 60%, #0a1e38 100%);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo-mark {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-shadow: 0 0 18px var(--accent);
+    white-space: nowrap;
+  }
+  .logo-sub { font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-top: 2px; }
+  .topbar-divider { width: 1px; height: 30px; background: var(--border); }
+  .live-badge {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--ok);
+    letter-spacing: 1px;
+  }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .topbar-stats { display: flex; gap: 24px; margin-left: auto; }
+  .ts { display: flex; flex-direction: column; align-items: flex-end; }
+  .ts-val { font-size: 14px; color: var(--accent); font-weight: 700; }
+  .ts-lbl { font-size: 9px; color: var(--muted); letter-spacing: 1px; }
+  .nav-tabs { display: flex; gap: 2px; margin-left: 20px; }
+  .nav-tab {
+    padding: 6px 14px; border: none; background: transparent;
+    color: var(--muted); font-family: var(--font); font-size: 10px;
+    letter-spacing: 1px; cursor: pointer; border-radius: 4px 4px 0 0;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(0,200,255,.05); }
+  .hl7-pulse {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--accent2);
+    animation: blink 2s infinite;
+    letter-spacing: 1px;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── SIDEBAR ─────────────────────────────────────── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 12px 0;
+  }
+  .sidebar-section { padding: 6px 14px; font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-top: 10px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+  }
+  .sidebar-item:hover { background: rgba(0,200,255,.05); border-left-color: var(--border); }
+  .sidebar-item.active { background: rgba(0,200,255,.1); border-left-color: var(--accent); color: var(--accent); }
+  .sidebar-item .si-icon { font-size: 13px; width: 18px; text-align: center; }
+  .sidebar-item .si-label { font-size: 11px; flex: 1; }
+  .si-badge {
+    font-size: 9px; padding: 1px 5px; border-radius: 8px;
+    background: var(--danger); color: #fff;
+  }
+  .si-badge.warn { background: var(--warn); }
+  .si-badge.ok   { background: var(--ok); color: #000; }
+  .sidebar-hospital {
+    margin: 10px 14px 6px;
+    padding: 10px 12px;
+    background: rgba(0,200,255,.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .sh-name { font-size: 11px; color: var(--accent); font-weight: 700; }
+  .sh-meta { font-size: 9px; color: var(--muted); margin-top: 3px; }
+  .sh-status { display: flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 9px; color: var(--ok); }
+
+  /* ── MAIN PANEL ──────────────────────────────────── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── CARDS ───────────────────────────────────────── */
+  .row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: .5;
+  }
+  .card-title { font-size: 9px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
+  .card-val { font-size: 28px; font-weight: 900; color: var(--accent); line-height: 1; }
+  .card-sub { font-size: 9px; color: var(--text2); margin-top: 4px; }
+  .card-sm { min-width: 140px; flex: 1; }
+  .card-md { min-width: 280px; flex: 2; }
+  .card-lg { min-width: 400px; flex: 3; }
+  .card-xl { flex: 1 1 100%; }
+
+  /* ── METRIC CARDS ────────────────────────────────── */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; margin-bottom: 14px; }
+  .metric {
+    background: var(--card); border: 1px solid var(--border); border-radius: 7px;
+    padding: 12px 14px; text-align: center;
+  }
+  .metric-val { font-size: 24px; font-weight: 900; }
+  .metric-lbl { font-size: 9px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+  .metric-delta { font-size: 10px; margin-top: 3px; }
+  .up   { color: var(--danger); }
+  .down { color: var(--ok); }
+  .flat { color: var(--muted); }
+  .c-accent  { color: var(--accent); }
+  .c-accent2 { color: var(--accent2); }
+  .c-warn    { color: var(--warn); }
+  .c-danger  { color: var(--danger); }
+  .c-ok      { color: var(--ok); }
+
+  /* ── TABLE ───────────────────────────────────────── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .data-table th {
+    text-align: left; padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted); font-size: 9px; letter-spacing: 1px;
+    font-weight: normal; white-space: nowrap;
+  }
+  .data-table td {
+    padding: 7px 10px; border-bottom: 1px solid rgba(26,58,92,.4);
+    vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(0,200,255,.04); }
+
+  /* ── STATUS PILL ─────────────────────────────────── */
+  .pill {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 9px; letter-spacing: 1px; font-weight: 700;
+    white-space: nowrap;
+  }
+  .pill-ok      { background: rgba(0,230,118,.15); color: var(--ok); border: 1px solid rgba(0,230,118,.3); }
+  .pill-warn    { background: rgba(255,149,0,.15);  color: var(--warn); border: 1px solid rgba(255,149,0,.3); }
+  .pill-danger  { background: rgba(255,59,59,.15);  color: var(--danger); border: 1px solid rgba(255,59,59,.3); }
+  .pill-accent  { background: rgba(0,200,255,.12);  color: var(--accent); border: 1px solid rgba(0,200,255,.3); }
+  .pill-muted   { background: rgba(90,122,153,.15); color: var(--muted); border: 1px solid rgba(90,122,153,.3); }
+
+  /* ── HL7 FEED ────────────────────────────────────── */
+  .hl7-stream {
+    background: #020810;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    height: 220px;
+    overflow-y: auto;
+    font-size: 10px;
+    font-family: var(--font);
+  }
+  .hl7-line { padding: 2px 0; display: flex; gap: 8px; }
+  .hl7-ts { color: var(--muted); white-space: nowrap; }
+  .hl7-type { color: var(--accent); width: 40px; }
+  .hl7-msg { color: var(--text2); }
+  .hl7-new { animation: fadeIn .5s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+
+  /* ── PROGRESS BAR ────────────────────────────────── */
+  .prog-wrap { background: rgba(0,0,0,.4); border-radius: 3px; height: 6px; overflow: hidden; margin-top: 5px; }
+  .prog-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+  .prog-accent  { background: linear-gradient(90deg, #0090bb, var(--accent)); }
+  .prog-ok      { background: linear-gradient(90deg, #00904f, var(--ok)); }
+  .prog-warn    { background: linear-gradient(90deg, #a06000, var(--warn)); }
+  .prog-danger  { background: linear-gradient(90deg, #a01010, var(--danger)); }
+
+  /* ── SECTION HEADER ──────────────────────────────── */
+  .sec-hdr {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-hdr h2 { font-size: 13px; letter-spacing: 2px; color: var(--accent); }
+  .sec-hdr span { font-size: 9px; color: var(--muted); margin-left: auto; letter-spacing: 1px; }
+
+  /* ── ALERT BOX ───────────────────────────────────── */
+  .alert-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+  .alert-crit { background: rgba(255,59,59,.1); border-left: 3px solid var(--danger); }
+  .alert-warn { background: rgba(255,149,0,.1); border-left: 3px solid var(--warn); }
+  .alert-info { background: rgba(0,200,255,.06); border-left: 3px solid var(--accent); }
+  .alert-ok   { background: rgba(0,230,118,.07); border-left: 3px solid var(--ok); }
+  .alert-icon { font-size: 14px; flex-shrink: 0; }
+  .alert-content { flex: 1; }
+  .alert-title { font-weight: 700; margin-bottom: 2px; }
+  .alert-desc { font-size: 10px; color: var(--text2); }
+  .alert-time { font-size: 9px; color: var(--muted); white-space: nowrap; }
+
+  /* ── DEPT ROW ────────────────────────────────────── */
+  .dept-row {
+    display: grid;
+    grid-template-columns: 100px 80px 1fr 80px 80px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(26,58,92,.4);
+  }
+  .dept-row:last-child { border-bottom: none; }
+  .dept-name { font-size: 11px; color: var(--text); }
+  .dept-cap  { font-size: 10px; color: var(--muted); }
+
+  /* ── FHIR BLOCK ──────────────────────────────────── */
+  .fhir-block {
+    background: #020810;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 10px;
+    font-family: var(--font);
+    overflow-x: auto;
+  }
+  .fhir-key   { color: #7ec8e3; }
+  .fhir-str   { color: #c3e88d; }
+  .fhir-num   { color: #f78c6c; }
+  .fhir-bool  { color: #ff9cac; }
+
+  /* ── PHYSICIAN LICENSE ───────────────────────────── */
+  .lic-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    transition: border-color .2s;
+  }
+  .lic-card:hover { border-color: var(--accent); }
+  .lic-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 900; color: #000;
+    flex-shrink: 0;
+  }
+  .lic-info { flex: 1; }
+  .lic-name { font-size: 12px; font-weight: 700; color: var(--text); }
+  .lic-spec { font-size: 9px; color: var(--muted); margin-top: 2px; letter-spacing: 1px; }
+  .lic-modules { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .lic-mod { font-size: 9px; padding: 2px 7px; border-radius: 10px; background: rgba(0,200,255,.1); color: var(--accent); border: 1px solid rgba(0,200,255,.2); }
+  .lic-actions { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+  .btn {
+    padding: 5px 12px; border-radius: 4px; border: none;
+    font-family: var(--font); font-size: 9px; cursor: pointer;
+    letter-spacing: 1px; transition: all .15s;
+  }
+  .btn-accent { background: rgba(0,200,255,.15); color: var(--accent); border: 1px solid rgba(0,200,255,.3); }
+  .btn-accent:hover { background: rgba(0,200,255,.25); }
+  .btn-danger { background: rgba(255,59,59,.15); color: var(--danger); border: 1px solid rgba(255,59,59,.3); }
+  .btn-danger:hover { background: rgba(255,59,59,.25); }
+  .btn-ok { background: rgba(0,230,118,.15); color: var(--ok); border: 1px solid rgba(0,230,118,.3); }
+  .btn-ok:hover { background: rgba(0,230,118,.25); }
+
+  /* ── SPARKLINE (SVG) ─────────────────────────────── */
+  .spark { display: block; }
+
+  /* ── COMPLIANCE TRACKER ──────────────────────────── */
+  .comp-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(26,58,92,.3); }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-name { font-size: 11px; flex: 1; }
+  .comp-date { font-size: 9px; color: var(--muted); width: 90px; text-align: center; }
+  .comp-bar  { flex: 2; }
+
+  /* ── MINI CHART ──────────────────────────────────── */
+  .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+  .mini-bar  { flex: 1; border-radius: 2px 2px 0 0; background: var(--accent); opacity: .6; transition: opacity .2s; }
+  .mini-bar:hover { opacity: 1; }
+
+  /* ── PATIENT LIST ────────────────────────────────── */
+  .pt-card {
+    display: grid;
+    grid-template-columns: 50px 1fr 80px 90px 80px 70px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    margin-bottom: 5px;
+    font-size: 11px;
+    transition: border-color .15s;
+    cursor: pointer;
+  }
+  .pt-card:hover { border-color: var(--accent); }
+  .pt-id { font-size: 10px; color: var(--accent); font-weight: 700; }
+  .pt-vitals { display: flex; gap: 8px; }
+  .pt-v { font-size: 9px; }
+  .pt-v span { color: var(--accent2); }
+
+  /* ── WATERMARK ───────────────────────────────────── */
+  .wm {
+    position: fixed; bottom: 10px; right: 14px;
+    font-size: 9px; color: rgba(90,122,153,.4);
+    letter-spacing: 1px; pointer-events: none;
+  }
+
+  /* ── SCROLLBAR ───────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── TOOLTIP ─────────────────────────────────────── */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+    background: #0c2540; border: 1px solid var(--border);
+    color: var(--text); font-size: 9px; padding: 4px 8px; border-radius: 4px;
+    white-space: nowrap; pointer-events: none; opacity: 0;
+    transition: opacity .15s;
+  }
+  [data-tip]:hover::after { opacity: 1; }
+
+  /* ── MODAL ───────────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.7); z-index: 999;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--accent);
+    border-radius: 10px; padding: 24px; max-width: 520px; width: 90%;
+    max-height: 80vh; overflow-y: auto;
+    box-shadow: 0 0 60px rgba(0,200,255,.2);
+  }
+  .modal-title { font-size: 14px; color: var(--accent); margin-bottom: 16px; letter-spacing: 2px; }
+  .modal-close { float: right; background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; }
+  .modal-close:hover { color: var(--danger); }
+  .form-row { margin-bottom: 12px; }
+  .form-label { font-size: 9px; color: var(--muted); letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .form-input {
+    width: 100%; padding: 8px 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text); font-family: var(--font); font-size: 11px;
+  }
+  .form-input:focus { outline: none; border-color: var(--accent); }
+  select.form-input option { background: var(--surface); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ══ TOPBAR ══════════════════════════════════════════ -->
+  <header class="topbar">
+    <div>
+      <div class="logo-mark">MANUFURE</div>
+      <div class="logo-sub">CLINICAL GRID // v1.0.0-ALPHA</div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="live-badge"><div class="live-dot"></div>HL7 LIVE</div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchView('command-center')">COMMAND CENTER</button>
+      <button class="nav-tab" onclick="switchView('patients')">PATIENT CENSUS</button>
+      <button class="nav-tab" onclick="switchView('hl7')">HL7 FEED</button>
+      <button class="nav-tab" onclick="switchView('licensing')">LICENSING</button>
+      <button class="nav-tab" onclick="switchView('compliance')">COMPLIANCE</button>
+      <button class="nav-tab" onclick="switchView('architecture')">ARCHITECTURE</button>
+    </div>
+
+    <div class="hl7-pulse" id="hl7Counter">↑ 0 msgs/min</div>
+
+    <div class="topbar-stats">
+      <div class="ts"><span class="ts-val" id="clockTime">--:--:--</span><span class="ts-lbl">EST</span></div>
+      <div class="ts"><span class="ts-val c-ok">ONLINE</span><span class="ts-lbl">SYSTEM</span></div>
+    </div>
+  </header>
+
+  <!-- ══ SIDEBAR ═════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-hospital">
+      <div class="sh-name">METRO GENERAL</div>
+      <div class="sh-meta">NEW YORK, NY · 486 BEDS</div>
+      <div class="sh-status"><div class="live-dot"></div>EPIC CONNECTED</div>
+    </div>
+
+    <div class="sidebar-section">DEPARTMENTS</div>
+    <div class="sidebar-item active" onclick="filterDept('all')">
+      <span class="si-icon">⊞</span><span class="si-label">All Departments</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('ED')">
+      <span class="si-icon">🚨</span><span class="si-label">Emergency</span>
+      <span class="si-badge">7</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('ICU')">
+      <span class="si-icon">💓</span><span class="si-label">ICU / MICU</span>
+      <span class="si-badge warn">3</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('SURGERY')">
+      <span class="si-icon">⚕</span><span class="si-label">Surgery</span>
+      <span class="si-badge ok">2</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('CARDIOLOGY')">
+      <span class="si-icon">❤</span><span class="si-label">Cardiology</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('RADIOLOGY')">
+      <span class="si-icon">🔬</span><span class="si-label">Radiology</span>
+    </div>
+    <div class="sidebar-item" onclick="filterDept('ONCOLOGY')">
+      <span class="si-icon">◎</span><span class="si-label">Oncology</span>
+    </div>
+
+    <div class="sidebar-section">QUICK ACTIONS</div>
+    <div class="sidebar-item" onclick="openModal('add-physician')">
+      <span class="si-icon">+</span><span class="si-label">Add Physician</span>
+    </div>
+    <div class="sidebar-item" onclick="openModal('run-report')">
+      <span class="si-icon">📊</span><span class="si-label">Export Report</span>
+    </div>
+    <div class="sidebar-item" onclick="openModal('hl7-config')">
+      <span class="si-icon">⚙</span><span class="si-label">HL7 Config</span>
+    </div>
+
+    <div class="sidebar-section">HOSPITALS CONNECTED</div>
+    <div class="sidebar-item">
+      <span class="si-icon">🏥</span><span class="si-label">Metro General</span>
+      <span class="si-badge ok">ON</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="si-icon">🏥</span><span class="si-label">St. Luke's NY</span>
+      <span class="si-badge warn">PEND</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="si-icon">🏥</span><span class="si-label">NYU Langone</span>
+      <span class="si-badge warn">PEND</span>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ─── VIEW: COMMAND CENTER ───────────────────── -->
+    <div class="view active" id="view-command-center">
+      <div class="sec-hdr">
+        <h2>COMMAND CENTER</h2>
+        <span id="cmdDate">METRO GENERAL · REAL-TIME OVERVIEW</span>
+      </div>
+
+      <div class="metric-grid" id="metricGrid">
+        <div class="metric">
+          <div class="metric-val c-accent" id="m-census">312</div>
+          <div class="metric-lbl">CURRENT CENSUS</div>
+          <div class="metric-delta up">▲ 4 vs yesterday</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-danger" id="m-alerts">18</div>
+          <div class="metric-lbl">ACTIVE ALERTS</div>
+          <div class="metric-delta up">▲ 3 new</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-warn" id="m-pending">47</div>
+          <div class="metric-lbl">PENDING DISCHARGE</div>
+          <div class="metric-delta flat">— unchanged</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-ok" id="m-hl7">1,284</div>
+          <div class="metric-lbl">HL7 MSGS / HR</div>
+          <div class="metric-delta up">▲ active</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-accent2" id="m-physicians">38</div>
+          <div class="metric-lbl">LICENSED PHYSICIANS</div>
+          <div class="metric-delta down">▼ 2 offline</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-accent" id="m-uptime">99.94%</div>
+          <div class="metric-lbl">GRID UPTIME (30D)</div>
+          <div class="metric-delta down">▲ SLA MET</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-ok" id="m-beds">174</div>
+          <div class="metric-lbl">BEDS AVAILABLE</div>
+          <div class="metric-delta down">▼ occupancy 64%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val c-warn" id="m-los">4.2d</div>
+          <div class="metric-lbl">AVG LENGTH OF STAY</div>
+          <div class="metric-delta flat">— stable</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card card-md">
+          <div class="card-title">DEPT CAPACITY — REAL TIME</div>
+          <div class="dept-row" style="font-size:9px;color:var(--muted);">
+            <span>DEPT</span><span>OCC/CAP</span><span>UTILIZATION</span><span>ACUITY</span><span>ALERTS</span>
+          </div>
+          <div id="deptRows"></div>
+        </div>
+        <div class="card card-md">
+          <div class="card-title">CLINICAL ALERTS — RANKED BY SEVERITY</div>
+          <div id="alertsList"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card card-md">
+          <div class="card-title">HL7 MESSAGE THROUGHPUT — LAST 12 HOURS</div>
+          <div class="mini-bars" id="throughputBars"></div>
+          <div style="margin-top:6px;font-size:9px;color:var(--muted);">HOUR →</div>
+        </div>
+        <div class="card card-md">
+          <div class="card-title">LIVE HL7 STREAM (LAST 5)</div>
+          <div class="hl7-stream" id="hl7Mini" style="height:130px;"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card card-xl">
+          <div class="card-title">PREDICTIVE AI INSIGHTS — MANUFURE INTELLIGENCE LAYER</div>
+          <div id="aiInsights"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── VIEW: PATIENT CENSUS ───────────────────── -->
+    <div class="view" id="view-patients">
+      <div class="sec-hdr">
+        <h2>PATIENT CENSUS</h2>
+        <span>312 ACTIVE · MANUFURE ID ASSIGNED</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input class="form-input" style="max-width:220px;" placeholder="SEARCH MRN / NAME / DEPT..." id="ptSearch" oninput="filterPatients()" />
+        <select class="form-input" style="max-width:140px;" id="ptDeptFilter" onchange="filterPatients()">
+          <option value="">ALL DEPTS</option>
+          <option>ED</option><option>ICU</option><option>SURGERY</option>
+          <option>CARDIOLOGY</option><option>RADIOLOGY</option><option>ONCOLOGY</option>
+        </select>
+      </div>
+      <div style="font-size:9px;color:var(--muted);display:grid;grid-template-columns:50px 1fr 80px 90px 80px 70px;gap:10px;padding:4px 10px;margin-bottom:4px;">
+        <span>MFR-ID</span><span>PATIENT</span><span>DEPT</span><span>VITALS</span><span>STATUS</span><span>PHYSICIAN</span>
+      </div>
+      <div id="patientList"></div>
+    </div>
+
+    <!-- ─── VIEW: HL7 FEED ─────────────────────────── -->
+    <div class="view" id="view-hl7">
+      <div class="sec-hdr">
+        <h2>HL7 / FHIR INGESTION PIPELINE</h2>
+        <span>ADT · ORU · ORM · MDM · DFT SUPPORTED</span>
+      </div>
+      <div class="row">
+        <div class="card card-sm">
+          <div class="card-title">MSGS PROCESSED</div>
+          <div class="card-val c-accent" id="hl7TotalMsgs">0</div>
+          <div class="card-sub">SINCE SESSION START</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">PARSE ERRORS</div>
+          <div class="card-val c-ok">0</div>
+          <div class="card-sub">100% SUCCESS RATE</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">AVG LATENCY</div>
+          <div class="card-val c-accent2" id="hl7Latency">12ms</div>
+          <div class="card-sub">HL7 → DB WRITE</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">FHIR R4</div>
+          <div class="card-val c-ok">ACTIVE</div>
+          <div class="card-sub">RESOURCE VERSION</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card card-xl">
+          <div class="card-title">LIVE HL7 MESSAGE STREAM — FULL LOG</div>
+          <div class="hl7-stream" style="height:280px;" id="hl7Full"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card card-md">
+          <div class="card-title">SAMPLE FHIR R4 RESOURCE — PATIENT BUNDLE</div>
+          <div class="fhir-block" id="fhirSample"></div>
+        </div>
+        <div class="card card-md">
+          <div class="card-title">MESSAGE TYPE BREAKDOWN</div>
+          <table class="data-table">
+            <thead><tr><th>HL7 TYPE</th><th>DESCRIPTION</th><th>VOLUME</th><th>STATUS</th></tr></thead>
+            <tbody id="hl7TypeTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── VIEW: LICENSING ────────────────────────── -->
+    <div class="view" id="view-licensing">
+      <div class="sec-hdr">
+        <h2>PHYSICIAN LICENSING LAYER</h2>
+        <span>38 ACTIVE · 5 TIER PRICING · MANUFURE SAAS</span>
+      </div>
+      <div class="row">
+        <div class="card card-sm">
+          <div class="card-title">MONTHLY RECURRING</div>
+          <div class="card-val c-accent2">$14,820</div>
+          <div class="card-sub">38 PHYSICIAN LICENSES</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">ENTERPRISE LICENSE</div>
+          <div class="card-val c-accent">$480K</div>
+          <div class="card-sub">METRO GENERAL / YR</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">MODULE UPSELL</div>
+          <div class="card-val c-warn">$8,400</div>
+          <div class="card-sub">AI + VOICE ADD-ONS</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">TOTAL ARR</div>
+          <div class="card-val c-ok">$661K</div>
+          <div class="card-sub">PILOT 1 HOSPITAL</div>
+        </div>
+      </div>
+      <div class="sec-hdr" style="margin-top:16px;">
+        <h2 style="font-size:11px;">LICENSED PHYSICIANS</h2>
+        <button class="btn btn-accent" onclick="openModal('add-physician')">+ PROVISION NEW LICENSE</button>
+      </div>
+      <div id="physicianCards"></div>
+    </div>
+
+    <!-- ─── VIEW: COMPLIANCE ───────────────────────── -->
+    <div class="view" id="view-compliance">
+      <div class="sec-hdr">
+        <h2>COMPLIANCE & SECURITY ROADMAP</h2>
+        <span>HIPAA · SOC 2 · HITRUST · FedRAMP</span>
+      </div>
+      <div class="row">
+        <div class="card card-sm">
+          <div class="card-title">HIPAA STATUS</div>
+          <div class="card-val c-ok" style="font-size:18px;">COMPLIANT</div>
+          <div class="card-sub">SIGNED BAA + POLICIES</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">SOC 2 TYPE II</div>
+          <div class="card-val c-warn" style="font-size:18px;">IN PROGRESS</div>
+          <div class="card-sub">TARGET: M9 2026</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">HITRUST CSF</div>
+          <div class="card-val c-warn" style="font-size:18px;">PLANNED</div>
+          <div class="card-sub">TARGET: M15 2026</div>
+        </div>
+        <div class="card card-sm">
+          <div class="card-title">AES-256 ENCRYPTION</div>
+          <div class="card-val c-ok" style="font-size:18px;">ACTIVE</div>
+          <div class="card-sub">AT-REST + IN-TRANSIT</div>
+        </div>
+      </div>
+      <div class="card card-xl" style="margin-bottom:12px;">
+        <div class="card-title">COMPLIANCE MILESTONE TRACKER — 24-MONTH ROADMAP</div>
+        <div id="complianceTracker"></div>
+      </div>
+      <div class="row">
+        <div class="card card-md">
+          <div class="card-title">ACTIVE SECURITY POLICIES</div>
+          <table class="data-table" id="secPolicyTable"></table>
+        </div>
+        <div class="card card-md">
+          <div class="card-title">AUDIT LOG — RECENT EVENTS</div>
+          <div id="auditLog"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── VIEW: ARCHITECTURE ─────────────────────── -->
+    <div class="view" id="view-architecture">
+      <div class="sec-hdr">
+        <h2>SYSTEM ARCHITECTURE</h2>
+        <span>HL7 FHIR → MANUFURE DB → PHYSICIAN API</span>
+      </div>
+      <div class="card card-xl" style="margin-bottom:14px;">
+        <div class="card-title">DATA FLOW DIAGRAM — MANUFURE CLINICAL GRID</div>
+        <div id="archDiagram" style="overflow-x:auto;padding:8px 0;"></div>
+      </div>
+      <div class="row">
+        <div class="card card-md">
+          <div class="card-title">TECH STACK</div>
+          <table class="data-table" id="techStack"></table>
+        </div>
+        <div class="card card-md">
+          <div class="card-title">EPIC INTEGRATION PATHWAY</div>
+          <div id="epicPath"></div>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ══ MODALS ══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-physician">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('add-physician')">✕</button>
+    <div class="modal-title">PROVISION PHYSICIAN LICENSE</div>
+    <div class="form-row">
+      <label class="form-label">FULL NAME</label>
+      <input class="form-input" placeholder="Dr. Jane Smith" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">NPI NUMBER</label>
+      <input class="form-input" placeholder="1234567890" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">SPECIALTY</label>
+      <select class="form-input">
+        <option>Emergency Medicine</option>
+        <option>Internal Medicine</option>
+        <option>Cardiology</option>
+        <option>Surgery</option>
+        <option>Radiology</option>
+        <option>Oncology</option>
+        <option>Anesthesiology</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">LICENSE TIER</label>
+      <select class="form-input">
+        <option>BASIC — $99/mo (read-only census + alerts)</option>
+        <option>STANDARD — $299/mo (+ AI documentation assist)</option>
+        <option>PRO — $499/mo (+ predictive analytics)</option>
+        <option>ENTERPRISE — $799/mo (+ voice + custom modules)</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">DEPT / UNIT</label>
+      <select class="form-input">
+        <option>Emergency Department</option>
+        <option>ICU / MICU</option>
+        <option>Surgery</option>
+        <option>Cardiology</option>
+        <option>Radiology</option>
+        <option>Oncology</option>
+      </select>
+    </div>
+    <button class="btn btn-ok" style="width:100%;padding:10px;font-size:11px;" onclick="closeModal('add-physician')">PROVISION LICENSE → MANUFURE DB</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-run-report">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('run-report')">✕</button>
+    <div class="modal-title">EXPORT CLINICAL REPORT</div>
+    <div class="form-row"><label class="form-label">REPORT TYPE</label>
+      <select class="form-input">
+        <option>Daily Census Summary</option>
+        <option>HL7 Message Audit</option>
+        <option>Physician Activity Report</option>
+        <option>Discharge Delay Analysis</option>
+        <option>HIPAA Compliance Summary</option>
+      </select>
+    </div>
+    <div class="form-row"><label class="form-label">DATE RANGE</label>
+      <select class="form-input"><option>Last 24 Hours</option><option>Last 7 Days</option><option>Last 30 Days</option></select>
+    </div>
+    <div class="form-row"><label class="form-label">FORMAT</label>
+      <select class="form-input"><option>PDF</option><option>CSV</option><option>FHIR Bundle (JSON)</option></select>
+    </div>
+    <button class="btn btn-accent" style="width:100%;padding:10px;font-size:11px;" onclick="closeModal('run-report')">GENERATE REPORT</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-hl7-config">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('hl7-config')">✕</button>
+    <div class="modal-title">HL7 ENDPOINT CONFIGURATION</div>
+    <div class="form-row"><label class="form-label">EPIC MLLP HOST</label>
+      <input class="form-input" value="epic-hl7.metrogeneral.org" /></div>
+    <div class="form-row"><label class="form-label">PORT</label>
+      <input class="form-input" value="2575" /></div>
+    <div class="form-row"><label class="form-label">FHIR R4 BASE URL</label>
+      <input class="form-input" value="https://epic.metrogeneral.org/api/FHIR/R4" /></div>
+    <div class="form-row"><label class="form-label">MANUFURE DB ENDPOINT</label>
+      <input class="form-input" value="https://db.manufure.com/v1/ingest" /></div>
+    <div class="form-row"><label class="form-label">TLS CERTIFICATE</label>
+      <input class="form-input" value="metrogeneral-mtls-2026.pem" /></div>
+    <button class="btn btn-ok" style="width:100%;padding:10px;font-size:11px;" onclick="closeModal('hl7-config')">SAVE CONFIGURATION</button>
+  </div>
+</div>
+
+<div class="wm">MANUFURE CLINICAL GRID // PROPRIETARY // HIPAA-GOVERNED DATA</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA LAYER
+═══════════════════════════════════════════════════ */
+const DEPTS = [
+  { name:'Emergency', short:'ED',        cap:48, occ:41, acuity:'HIGH',    alerts:7, prog:'danger' },
+  { name:'ICU / MICU', short:'ICU',      cap:32, occ:30, acuity:'CRIT',    alerts:3, prog:'danger' },
+  { name:'Surgery',   short:'SURGERY',   cap:60, occ:38, acuity:'MED',     alerts:2, prog:'warn' },
+  { name:'Cardiology',short:'CARDIOLOGY',cap:50, occ:34, acuity:'MED',     alerts:1, prog:'warn' },
+  { name:'Radiology', short:'RADIOLOGY', cap:20, occ:12, acuity:'LOW',     alerts:0, prog:'ok' },
+  { name:'Oncology',  short:'ONCOLOGY',  cap:40, occ:28, acuity:'HIGH',    alerts:5, prog:'warn' },
+  { name:'Orthopedics',short:'ORTHO',    cap:36, occ:22, acuity:'LOW',     alerts:0, prog:'ok' },
+  { name:'Neurology', short:'NEURO',     cap:28, occ:19, acuity:'MED',     alerts:1, prog:'warn' },
+];
+
+const ALERTS = [
+  { sev:'CRITICAL', dept:'ICU',   msg:'Patient MFR-0049 — SpO₂ < 88%. Immediate intervention required.',   time:'0m ago', type:'crit' },
+  { sev:'CRITICAL', dept:'ED',    msg:'Code Blue declared — Trauma Bay 2. All available physicians.',         time:'3m ago', type:'crit' },
+  { sev:'WARNING',  dept:'ICU',   msg:'Patient MFR-0112 — Sepsis score 6/10. Antibiotics not yet ordered.',  time:'7m ago', type:'warn' },
+  { sev:'WARNING',  dept:'ED',    msg:'ED capacity at 85%. Predicted overflow in 2h based on arrival rate.',  time:'12m ago',type:'warn' },
+  { sev:'WARNING',  dept:'ONCO',  msg:'Patient MFR-0223 — CBC critical: WBC 0.8 K/µL (neutropenic).',        time:'18m ago',type:'warn' },
+  { sev:'INFO',     dept:'SURG',  msg:'OR-3 now available. Next scheduled surgery delayed 40 min.',           time:'22m ago',type:'info' },
+  { sev:'INFO',     dept:'CARD',  msg:'Patient MFR-0307 — Troponin trending down. Monitor in 4h.',            time:'31m ago',type:'info' },
+  { sev:'RESOLVED', dept:'ED',    msg:'Patient MFR-0089 discharged. Bed cleared and sanitized.',              time:'45m ago',type:'ok' },
+];
+
+const PHYSICIANS = [
+  { name:'Dr. Aisha Rahman',   initials:'AR', spec:'Emergency Medicine', tier:'ENTERPRISE', modules:['AI DOCS','VOICE','PRED AI','CMD CENTER'], mrr:799, status:'ACTIVE', pts:14 },
+  { name:'Dr. Carlos Vega',    initials:'CV', spec:'Cardiology',         tier:'PRO',        modules:['AI DOCS','PRED AI','CMD CENTER'],         mrr:499, status:'ACTIVE', pts:9  },
+  { name:'Dr. Priya Mehta',    initials:'PM', spec:'ICU / Critical Care',tier:'ENTERPRISE', modules:['AI DOCS','VOICE','PRED AI','CMD CENTER'], mrr:799, status:'ACTIVE', pts:11 },
+  { name:'Dr. James Thornton', initials:'JT', spec:'Surgery',            tier:'STANDARD',   modules:['AI DOCS','CMD CENTER'],                   mrr:299, status:'ACTIVE', pts:6  },
+  { name:'Dr. Olivia Chen',    initials:'OC', spec:'Oncology',           tier:'PRO',        modules:['AI DOCS','PRED AI','CMD CENTER'],         mrr:499, status:'ACTIVE', pts:8  },
+  { name:'Dr. Samuel Adeyemi', initials:'SA', spec:'Neurology',          tier:'STANDARD',   modules:['AI DOCS','CMD CENTER'],                   mrr:299, status:'OFFLINE',pts:4  },
+  { name:'Dr. Maria Santos',   initials:'MS', spec:'Internal Medicine',  tier:'BASIC',      modules:['CMD CENTER'],                             mrr:99,  status:'ACTIVE', pts:12 },
+  { name:'Dr. Kevin Park',     initials:'KP', spec:'Radiology',          tier:'PRO',        modules:['AI DOCS','PRED AI','CMD CENTER'],         mrr:499, status:'ACTIVE', pts:0  },
+];
+
+const PATIENTS = [
+  { id:'MFR-0049', name:'J. Morrison', dept:'ICU',       vitals:{hr:118,bp:'88/52',spo2:87}, status:'CRITICAL', physician:'Dr. P. Mehta' },
+  { id:'MFR-0112', name:'R. Okonkwo',  dept:'ICU',       vitals:{hr:104,bp:'102/68',spo2:93},status:'WARNING',  physician:'Dr. P. Mehta' },
+  { id:'MFR-0223', name:'T. Sato',     dept:'ONCOLOGY',  vitals:{hr:88, bp:'118/74',spo2:96},status:'WARNING',  physician:'Dr. O. Chen'  },
+  { id:'MFR-0307', name:'E. Williams', dept:'CARDIOLOGY',vitals:{hr:72, bp:'124/80',spo2:98},status:'STABLE',   physician:'Dr. C. Vega'  },
+  { id:'MFR-0412', name:'A. Hassan',   dept:'ED',        vitals:{hr:96, bp:'130/84',spo2:97},status:'STABLE',   physician:'Dr. A. Rahman'},
+  { id:'MFR-0518', name:'D. Rivera',   dept:'SURGERY',   vitals:{hr:64, bp:'116/72',spo2:99},status:'STABLE',   physician:'Dr. J. Thornton'},
+  { id:'MFR-0619', name:'S. Kim',      dept:'NEUROLOGY', vitals:{hr:78, bp:'120/76',spo2:98},status:'STABLE',   physician:'Dr. S. Adeyemi'},
+  { id:'MFR-0724', name:'B. Patel',    dept:'ED',        vitals:{hr:134,bp:'90/60',spo2:91}, status:'WARNING',  physician:'Dr. A. Rahman'},
+  { id:'MFR-0830', name:'L. Thompson', dept:'ICU',       vitals:{hr:58, bp:'108/66',spo2:95},status:'STABLE',   physician:'Dr. P. Mehta' },
+  { id:'MFR-0941', name:'C. Nguyen',   dept:'CARDIOLOGY',vitals:{hr:82, bp:'136/88',spo2:97},status:'STABLE',   physician:'Dr. C. Vega'  },
+  { id:'MFR-1055', name:'M. Johnson',  dept:'ONCOLOGY',  vitals:{hr:76, bp:'112/70',spo2:96},status:'STABLE',   physician:'Dr. O. Chen'  },
+  { id:'MFR-1163', name:'F. Martinez', dept:'ED',        vitals:{hr:110,bp:'94/58',spo2:94}, status:'WARNING',  physician:'Dr. A. Rahman'},
+];
+
+const HL7_TYPES = [
+  { type:'ADT^A01', desc:'Admit / Visit Notification',  vol:342, status:'ACTIVE' },
+  { type:'ADT^A03', desc:'Discharge Patient',           vol:189, status:'ACTIVE' },
+  { type:'ADT^A08', desc:'Update Patient Information',  vol:567, status:'ACTIVE' },
+  { type:'ORU^R01', desc:'Observation Result',          vol:891, status:'ACTIVE' },
+  { type:'ORM^O01', desc:'Order Message',               vol:423, status:'ACTIVE' },
+  { type:'MDM^T02', desc:'Document Status Change',      vol:214, status:'ACTIVE' },
+  { type:'DFT^P03', desc:'Post Detail Financial Trans', vol:98,  status:'ACTIVE' },
+  { type:'SIU^S12', desc:'Scheduling Notification',     vol:76,  status:'ACTIVE' },
+];
+
+const COMPLIANCE_ITEMS = [
+  { name:'HIPAA Privacy Rule',       status:'COMPLETE', pct:100, date:'JAN 2026', prog:'ok' },
+  { name:'HIPAA Security Rule',      status:'COMPLETE', pct:100, date:'JAN 2026', prog:'ok' },
+  { name:'Business Associate Agmt',  status:'COMPLETE', pct:100, date:'FEB 2026', prog:'ok' },
+  { name:'SOC 2 Type I',             status:'COMPLETE', pct:100, date:'MAR 2026', prog:'ok' },
+  { name:'SOC 2 Type II Audit',      status:'IN PROG',  pct:55,  date:'SEP 2026', prog:'warn' },
+  { name:'HITRUST Pre-Assessment',   status:'PLANNED',  pct:20,  date:'DEC 2026', prog:'warn' },
+  { name:'HITRUST Full Certification',status:'PLANNED', pct:5,   date:'MAR 2027', prog:'warn' },
+  { name:'FedRAMP Authorization',    status:'PLANNED',  pct:0,   date:'TBD',      prog:'danger' },
+  { name:'GDPR Compliance Review',   status:'IN PROG',  pct:40,  date:'JUN 2026', prog:'warn' },
+  { name:'CCPA / NY SHIELD Act',     status:'IN PROG',  pct:65,  date:'JUL 2026', prog:'warn' },
+];
+
+const TECH_STACK = [
+  ['HL7 MLLP Listener',  'Node.js + net.Socket',     'PROD'],
+  ['FHIR R4 Parser',     'hl7.js + @medplum/fhir',   'PROD'],
+  ['API Gateway',        'AWS API Gateway + Lambda',  'PROD'],
+  ['Core Database',      'PostgreSQL 15 (AWS RDS)',   'PROD'],
+  ['Patient Index',      'Elasticsearch 8.x',         'PROD'],
+  ['Cache Layer',        'Redis 7 (Elasticache)',      'PROD'],
+  ['PHI Encryption',     'AES-256-GCM at rest',       'PROD'],
+  ['TLS Transport',      'TLS 1.3 + mTLS',            'PROD'],
+  ['Physician API',      'REST + GraphQL + WebSocket','PROD'],
+  ['AI Layer',           'Claude Sonnet 4.6 (Anthrop)','BETA'],
+  ['Voice Assist',       'Whisper v3 → Claude',       'BETA'],
+  ['Audit Logging',      'AWS CloudTrail + SIEM',     'PROD'],
+];
+
+const AI_INSIGHTS = [
+  { icon:'🔮', title:'ED OVERFLOW PREDICTION', body:'Based on current arrival rate (14/hr) and avg LOS (3.2h), ED will exceed 95% capacity in approximately 2h 14m. Recommend: activate surge protocol, notify 3 on-call physicians.', sev:'warn' },
+  { icon:'🧠', title:'SEPSIS EARLY WARNING — MFR-0112', body:'Patient R. Okonkwo (ICU) shows 6 of 8 SIRS criteria. AI confidence 87% for septic shock within 4 hours. Antibiotic window: 68 minutes remaining for optimal outcome.', sev:'crit' },
+  { icon:'📋', title:'DISCHARGE OPTIMIZATION', body:'47 patients are discharge-ready but pending documentation. AI-estimated cost of delay: $28,400/day. Top bottleneck: attending sign-off queue (avg 2.4 hours). Recommend: AI-assisted discharge summaries.', sev:'info' },
+  { icon:'❤️', title:'READMISSION RISK COHORT', body:'12 patients in current census have >40% 30-day readmission probability (LACE+ score). Targeted care transition calls could prevent 8 readmissions, saving $192,000 (Medicare DRG avg).', sev:'info' },
+  { icon:'💊', title:'MEDICATION RECONCILIATION GAP', body:'3 patients transferred from ED to floors in past 6 hours have incomplete medication reconciliation in Epic. Risk of adverse drug event elevated 3.4x. Pharmacist review recommended.', sev:'warn' },
+];
+
+/* ═══════════════════════════════════════════════════
+   HL7 SIMULATION
+═══════════════════════════════════════════════════ */
+const HL7_MSG_TEMPLATES = [
+  t => `ADT^A08 | PT:${rMRN()} | UPD vitals HR=${rand(60,130)} BP=${rand(100,150)}/${rand(60,90)} | DEPT:${rDept()}`,
+  t => `ORU^R01 | PT:${rMRN()} | LAB result CBC WBC=${(Math.random()*12+2).toFixed(1)}K | STATUS:FINAL`,
+  t => `ADT^A01 | PT:${rMRN()} | ADMIT ${rDept()} | ACUITY:${['LOW','MED','HIGH','CRITICAL'][rand(0,3)]}`,
+  t => `ADT^A03 | PT:${rMRN()} | DISCHARGE planned | LOS:${rand(1,8)}d | DISPO:HOME`,
+  t => `ORM^O01 | PT:${rMRN()} | ORDER:${['CT HEAD','EKG','CBC','TROPONIN','ECHO','CXR'][rand(0,5)]} | PRIORITY:${['STAT','ROUTINE'][rand(0,1)]}`,
+  t => `MDM^T02 | PT:${rMRN()} | NOTE:${['PROGRESS','DISCHARGE SUMMARY','CONSULT','H&P'][rand(0,3)]} | AUTH:${['Rahman','Vega','Mehta','Thornton'][rand(0,3)]}`,
+  t => `ORU^R01 | PT:${rMRN()} | MICRO blood cx ${['NEGATIVE','PENDING','POSITIVE'][rand(0,2)]} | LAB:MICRO`,
+  t => `ADT^A08 | PT:${rMRN()} | TRANSFER ${rDept()} → ${rDept()} | REASON:STEP-UP`,
+];
+function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function rMRN(){ return 'MFR-'+String(rand(1,9999)).padStart(4,'0'); }
+function rDept(){ return ['ED','ICU','SURGERY','CARDIOLOGY','RADIOLOGY','ONCOLOGY'][rand(0,5)]; }
+function tsNow(){ const d=new Date(); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`; }
+
+let hl7MsgCount = 0;
+let hl7MsgsPerMin = 0;
+let hl7MinCount = 0;
+
+function emitHL7(){
+  const msg = HL7_MSG_TEMPLATES[rand(0, HL7_MSG_TEMPLATES.length-1)]();
+  const ts  = tsNow();
+  const type= msg.split(' ')[0];
+  hl7MsgCount++;
+  hl7MsgsPerMin++;
+
+  const addLine = (container, animate) => {
+    if(!container) return;
+    const line = document.createElement('div');
+    line.className = 'hl7-line' + (animate?' hl7-new':'');
+    line.innerHTML = `<span class="hl7-ts">${ts}</span><span class="hl7-type">${type.split('^')[0]}</span><span class="hl7-msg">${msg}</span>`;
+    container.insertBefore(line, container.firstChild);
+    while(container.children.length > 80) container.removeChild(container.lastChild);
+  };
+
+  addLine(document.getElementById('hl7Mini'), true);
+  addLine(document.getElementById('hl7Full'), true);
+
+  const tot = document.getElementById('hl7TotalMsgs');
+  if(tot) tot.textContent = hl7MsgCount.toLocaleString();
+
+  const lat = document.getElementById('hl7Latency');
+  if(lat) lat.textContent = rand(8,24)+'ms';
+}
+
+/* ═══════════════════════════════════════════════════
+   RENDER FUNCTIONS
+═══════════════════════════════════════════════════ */
+function renderDepts(){
+  const el = document.getElementById('deptRows');
+  if(!el) return;
+  el.innerHTML = DEPTS.map(d => {
+    const pct = Math.round(d.occ/d.cap*100);
+    return `<div class="dept-row">
+      <span class="dept-name">${d.name}</span>
+      <span class="dept-cap" style="color:var(--text2)">${d.occ}/${d.cap}</span>
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">${pct}%</div>
+        <div class="prog-wrap"><div class="prog-fill prog-${d.prog}" style="width:${pct}%"></div></div>
+      </div>
+      <span class="pill pill-${d.acuity==='CRIT'?'danger':d.acuity==='HIGH'?'warn':d.acuity==='MED'?'accent':'muted'}">${d.acuity}</span>
+      <span class="${d.alerts>4?'c-danger':d.alerts>0?'c-warn':'c-ok'}">${d.alerts?d.alerts+' ⚠':'✓ clear'}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderAlerts(){
+  const el = document.getElementById('alertsList');
+  if(!el) return;
+  el.innerHTML = ALERTS.slice(0,6).map(a => `
+    <div class="alert-row alert-${a.type}">
+      <span class="alert-icon">${a.type==='crit'?'🔴':a.type==='warn'?'🟡':a.type==='ok'?'✅':'ℹ️'}</span>
+      <div class="alert-content">
+        <div class="alert-title">[${a.sev}] ${a.dept}</div>
+        <div class="alert-desc">${a.msg}</div>
+      </div>
+      <span class="alert-time">${a.time}</span>
+    </div>`).join('');
+}
+
+function renderThroughputBars(){
+  const el = document.getElementById('throughputBars');
+  if(!el) return;
+  const vals = Array.from({length:12},()=>rand(40,100));
+  el.innerHTML = vals.map(v => `<div class="mini-bar" style="height:${v}%;opacity:${0.4+v/200};"></div>`).join('');
+}
+
+function renderAiInsights(){
+  const el = document.getElementById('aiInsights');
+  if(!el) return;
+  el.innerHTML = AI_INSIGHTS.map(i => `
+    <div class="alert-row alert-${i.sev}">
+      <span class="alert-icon">${i.icon}</span>
+      <div class="alert-content">
+        <div class="alert-title">${i.title}</div>
+        <div class="alert-desc">${i.body}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderPatients(){
+  const search  = (document.getElementById('ptSearch')||{}).value||'';
+  const dept    = (document.getElementById('ptDeptFilter')||{}).value||'';
+  const el      = document.getElementById('patientList');
+  if(!el) return;
+  const filtered = PATIENTS.filter(p => {
+    const s = search.toLowerCase();
+    const matchSearch = !s || p.id.toLowerCase().includes(s) || p.name.toLowerCase().includes(s) || p.dept.toLowerCase().includes(s);
+    const matchDept = !dept || p.dept === dept;
+    return matchSearch && matchDept;
+  });
+  el.innerHTML = filtered.map(p => {
+    const sc = p.status==='CRITICAL'?'c-danger':p.status==='WARNING'?'c-warn':'c-ok';
+    return `<div class="pt-card">
+      <span class="pt-id">${p.id}</span>
+      <span>${p.name}</span>
+      <span class="pill pill-${p.dept==='ICU'?'danger':p.dept==='ED'?'warn':'accent'}">${p.dept}</span>
+      <span class="pt-vitals">
+        <span class="pt-v">HR:<span>${p.vitals.hr}</span></span>
+        <span class="pt-v">SpO₂:<span>${p.vitals.spo2}%</span></span>
+      </span>
+      <span class="pill pill-${p.status==='CRITICAL'?'danger':p.status==='WARNING'?'warn':'ok'}">${p.status}</span>
+      <span style="font-size:9px;color:var(--muted);">${p.physician.replace('Dr. ','Dr.')}</span>
+    </div>`;
+  }).join('') || '<div style="color:var(--muted);font-size:11px;padding:20px;">NO PATIENTS MATCH FILTER</div>';
+}
+function filterPatients(){ renderPatients(); }
+
+function renderHL7Types(){
+  const el = document.getElementById('hl7TypeTable');
+  if(!el) return;
+  el.innerHTML = `<thead><tr><th>MSG TYPE</th><th>DESCRIPTION</th><th>VOLUME</th><th>STATUS</th></tr></thead><tbody>`+
+    HL7_TYPES.map(t => `<tr>
+      <td style="color:var(--accent);font-weight:700;">${t.type}</td>
+      <td style="color:var(--text2)">${t.desc}</td>
+      <td style="color:var(--accent2)">${t.vol.toLocaleString()}</td>
+      <td><span class="pill pill-ok">${t.status}</span></td>
+    </tr>`).join('') + '</tbody>';
+}
+
+function renderFHIRSample(){
+  const el = document.getElementById('fhirSample');
+  if(!el) return;
+  const sample = {
+    resourceType: "Bundle",
+    id: "manufure-patient-bundle-MFR-0049",
+    type: "searchset",
+    entry: [{
+      resource: {
+        resourceType: "Patient",
+        id: "MFR-0049",
+        identifier: [{ system: "https://manufure.com/mrn", value: "MFR-0049" }],
+        name: [{ family: "Morrison", given: ["James"] }],
+        birthDate: "1962-03-14",
+        gender: "male"
+      }
+    },{
+      resource: {
+        resourceType: "Observation",
+        code: { text: "Heart Rate" },
+        valueQuantity: { value: 118, unit: "bpm" },
+        status: "final",
+        effectiveDateTime: new Date().toISOString()
+      }
+    }]
+  };
+  const fmtJson = JSON.stringify(sample, null, 2)
+    .replace(/"([^"]+)":/g, '<span class="fhir-key">"$1":</span>')
+    .replace(/: "([^"]+)"/g, ': <span class="fhir-str">"$1"</span>')
+    .replace(/: (\d+\.?\d*)/g, ': <span class="fhir-num">$1</span>')
+    .replace(/: (true|false)/g, ': <span class="fhir-bool">$1</span>');
+  el.innerHTML = fmtJson;
+}
+
+function renderPhysicians(){
+  const el = document.getElementById('physicianCards');
+  if(!el) return;
+  el.innerHTML = PHYSICIANS.map(p => `
+    <div class="lic-card">
+      <div class="lic-avatar">${p.initials}</div>
+      <div class="lic-info">
+        <div class="lic-name">${p.name}</div>
+        <div class="lic-spec">${p.spec} · ${p.pts} ACTIVE PATIENTS</div>
+        <div class="lic-modules">${p.modules.map(m=>`<span class="lic-mod">${m}</span>`).join('')}</div>
+      </div>
+      <div class="lic-actions">
+        <span class="pill pill-${p.status==='ACTIVE'?'ok':'muted'}">${p.status}</span>
+        <span style="font-size:10px;color:var(--accent2);margin-top:4px;">$${p.mrr}/mo · ${p.tier}</span>
+        <div style="display:flex;gap:4px;margin-top:6px;">
+          <button class="btn btn-accent">MODULES</button>
+          <button class="btn btn-danger">REVOKE</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderCompliance(){
+  const el = document.getElementById('complianceTracker');
+  if(!el) return;
+  el.innerHTML = COMPLIANCE_ITEMS.map(c => `
+    <div class="comp-row">
+      <span class="comp-name">${c.name}</span>
+      <span class="comp-date">${c.date}</span>
+      <div class="comp-bar">
+        <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">${c.pct}% — <span class="pill pill-${c.status==='COMPLETE'?'ok':c.status==='IN PROG'?'warn':'muted'}">${c.status}</span></div>
+        <div class="prog-wrap"><div class="prog-fill prog-${c.prog}" style="width:${c.pct}%"></div></div>
+      </div>
+    </div>`).join('');
+
+  const secEl = document.getElementById('secPolicyTable');
+  if(secEl) secEl.innerHTML = `<thead><tr><th>POLICY</th><th>VERSION</th><th>STATUS</th></tr></thead><tbody>`+[
+    ['Acceptable Use Policy','v2.1','ACTIVE'],
+    ['PHI Access Control Policy','v3.0','ACTIVE'],
+    ['Incident Response Plan','v2.4','ACTIVE'],
+    ['Breach Notification Procedure','v1.8','ACTIVE'],
+    ['Business Continuity Plan','v1.3','ACTIVE'],
+    ['Vendor Risk Management','v2.0','ACTIVE'],
+    ['Data Retention Policy','v1.5','ACTIVE'],
+    ['Audit Log Policy','v1.2','ACTIVE'],
+  ].map(r=>`<tr><td>${r[0]}</td><td style="color:var(--muted)">${r[1]}</td><td><span class="pill pill-ok">${r[2]}</span></td></tr>`).join('')+'</tbody>';
+
+  const auditEl = document.getElementById('auditLog');
+  if(auditEl) auditEl.innerHTML = [
+    {ts:'08:41:02',evt:'Dr. Rahman accessed patient MFR-0049 chart',type:'info'},
+    {ts:'08:39:14',evt:'HL7 ADT^A01: MFR-1247 admitted to ED',type:'ok'},
+    {ts:'08:37:55',evt:'License provisioned: Dr. K. Park (Radiology)',type:'ok'},
+    {ts:'08:35:22',evt:'ALERT triggered: SpO₂ < 88% patient MFR-0049',type:'crit'},
+    {ts:'08:31:09',evt:'SOC 2 policy document updated (v3.0)',type:'info'},
+    {ts:'08:28:44',evt:'Failed login attempt: unknown IP 203.0.113.45',type:'warn'},
+    {ts:'08:22:17',evt:'Backup verified: manufure-db-snapshot-0508',type:'ok'},
+  ].map(a=>`<div class="alert-row alert-${a.type}" style="margin-bottom:4px;">
+    <span style="font-size:9px;color:var(--muted);white-space:nowrap;">${a.ts}</span>
+    <span style="font-size:10px;">${a.evt}</span>
+  </div>`).join('');
+}
+
+function renderArchitecture(){
+  const el = document.getElementById('archDiagram');
+  if(!el) return;
+  el.innerHTML = `
+  <svg viewBox="0 0 900 340" width="100%" style="min-width:720px;" font-family="Courier New,monospace" font-size="10">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#00c8ff"/>
+      </marker>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Hospital Sources -->
+    <rect x="10" y="30" width="120" height="50" rx="6" fill="#0c1e35" stroke="#1a3a5c"/>
+    <text x="70" y="52" text-anchor="middle" fill="#7fa8cc">HOSPITAL A</text>
+    <text x="70" y="68" text-anchor="middle" fill="#5a7a99">EPIC EHR</text>
+
+    <rect x="10" y="100" width="120" height="50" rx="6" fill="#0c1e35" stroke="#1a3a5c"/>
+    <text x="70" y="122" text-anchor="middle" fill="#7fa8cc">HOSPITAL B</text>
+    <text x="70" y="138" text-anchor="middle" fill="#5a7a99">CERNER EHR</text>
+
+    <rect x="10" y="170" width="120" height="50" rx="6" fill="#0c1e35" stroke="#1a3a5c"/>
+    <text x="70" y="192" text-anchor="middle" fill="#7fa8cc">HOSPITAL C</text>
+    <text x="70" y="208" text-anchor="middle" fill="#5a7a99">MEDITECH</text>
+
+    <!-- HL7 Layer -->
+    <rect x="170" y="60" width="140" height="180" rx="8" fill="#081828" stroke="#00c8ff" stroke-opacity=".4"/>
+    <text x="240" y="82" text-anchor="middle" fill="#00c8ff" font-weight="bold" filter="url(#glow)">HL7 GATEWAY</text>
+    <text x="240" y="100" text-anchor="middle" fill="#5a7a99">MLLP LISTENER</text>
+    <text x="240" y="120" text-anchor="middle" fill="#5a7a99">HL7 v2.x / FHIR R4</text>
+    <text x="240" y="140" text-anchor="middle" fill="#5a7a99">MESSAGE PARSER</text>
+    <text x="240" y="160" text-anchor="middle" fill="#5a7a99">TRANSFORMER</text>
+    <text x="240" y="180" text-anchor="middle" fill="#5a7a99">TLS 1.3 + mTLS</text>
+    <text x="240" y="210" text-anchor="middle" fill="#00ffb3" font-size="9">PORT 2575 INBOUND</text>
+
+    <!-- Lines: hospitals → HL7 -->
+    <line x1="130" y1="55"  x2="170" y2="100" stroke="#1a3a5c" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="130" y1="125" x2="170" y2="150" stroke="#1a3a5c" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="130" y1="195" x2="170" y2="200" stroke="#1a3a5c" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Manufure DB -->
+    <rect x="350" y="80" width="160" height="160" rx="8" fill="#081828" stroke="#00ffb3" stroke-opacity=".5"/>
+    <text x="430" y="102" text-anchor="middle" fill="#00ffb3" font-weight="bold" filter="url(#glow)">MANUFURE DB</text>
+    <text x="430" y="122" text-anchor="middle" fill="#5a7a99">PostgreSQL + ES</text>
+    <text x="430" y="142" text-anchor="middle" fill="#5a7a99">AES-256 at rest</text>
+    <text x="430" y="162" text-anchor="middle" fill="#5a7a99">HIPAA PHI Store</text>
+    <text x="430" y="182" text-anchor="middle" fill="#5a7a99">Federated Auth</text>
+    <text x="430" y="202" text-anchor="middle" fill="#5a7a99">Redis Cache</text>
+    <text x="430" y="225" text-anchor="middle" fill="#00c8ff" font-size="9">AWS RDS + ELASTICACHE</text>
+
+    <!-- HL7 → DB -->
+    <line x1="310" y1="150" x2="350" y2="160" stroke="#00c8ff" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- AI Engine -->
+    <rect x="350" y="260" width="160" height="60" rx="8" fill="#081828" stroke="#ff9500" stroke-opacity=".5"/>
+    <text x="430" y="285" text-anchor="middle" fill="#ff9500" font-weight="bold">AI / ML ENGINE</text>
+    <text x="430" y="305" text-anchor="middle" fill="#5a7a99">Claude Sonnet 4.6</text>
+
+    <!-- DB → AI -->
+    <line x1="430" y1="240" x2="430" y2="260" stroke="#ff9500" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,2"/>
+
+    <!-- API Layer -->
+    <rect x="560" y="80" width="140" height="160" rx="8" fill="#081828" stroke="#00c8ff" stroke-opacity=".4"/>
+    <text x="630" y="102" text-anchor="middle" fill="#00c8ff" font-weight="bold">API LAYER</text>
+    <text x="630" y="122" text-anchor="middle" fill="#5a7a99">REST + GraphQL</text>
+    <text x="630" y="142" text-anchor="middle" fill="#5a7a99">WebSocket</text>
+    <text x="630" y="162" text-anchor="middle" fill="#5a7a99">License Validator</text>
+    <text x="630" y="182" text-anchor="middle" fill="#5a7a99">Rate Limiter</text>
+    <text x="630" y="202" text-anchor="middle" fill="#5a7a99">Audit Logger</text>
+    <text x="630" y="225" text-anchor="middle" fill="#00ffb3" font-size="9">JWT + RBAC</text>
+
+    <!-- DB → API -->
+    <line x1="510" y1="160" x2="560" y2="160" stroke="#00c8ff" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Physician Endpoints -->
+    <rect x="750" y="50"  width="120" height="42" rx="6" fill="#0c1e35" stroke="#00c8ff" stroke-opacity=".4"/>
+    <text x="810" y="68"  text-anchor="middle" fill="#cce8ff">MD DASHBOARD</text>
+    <text x="810" y="83"  text-anchor="middle" fill="#5a7a99">Clinical Grid UI</text>
+
+    <rect x="750" y="110" width="120" height="42" rx="6" fill="#0c1e35" stroke="#00c8ff" stroke-opacity=".4"/>
+    <text x="810" y="128" text-anchor="middle" fill="#cce8ff">MOBILE APP</text>
+    <text x="810" y="143" text-anchor="middle" fill="#5a7a99">iOS / Android</text>
+
+    <rect x="750" y="170" width="120" height="42" rx="6" fill="#0c1e35" stroke="#00c8ff" stroke-opacity=".4"/>
+    <text x="810" y="188" text-anchor="middle" fill="#cce8ff">VOICE ASSIST</text>
+    <text x="810" y="203" text-anchor="middle" fill="#5a7a99">Ambient AI</text>
+
+    <rect x="750" y="230" width="120" height="42" rx="6" fill="#0c1e35" stroke="#00ffb3" stroke-opacity=".4"/>
+    <text x="810" y="248" text-anchor="middle" fill="#00ffb3">LICENSING API</text>
+    <text x="810" y="263" text-anchor="middle" fill="#5a7a99">Stripe + Tier RBAC</text>
+
+    <!-- API → Endpoints -->
+    <line x1="700" y1="120" x2="750" y2="71"  stroke="#00c8ff" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="700" y1="140" x2="750" y2="131" stroke="#00c8ff" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="700" y1="160" x2="750" y2="191" stroke="#00c8ff" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="700" y1="200" x2="750" y2="251" stroke="#00ffb3" stroke-width="1.5" marker-end="url(#arr)"/>
+  </svg>`;
+
+  const techEl = document.getElementById('techStack');
+  if(techEl) techEl.innerHTML = `<thead><tr><th>COMPONENT</th><th>TECHNOLOGY</th><th>ENV</th></tr></thead><tbody>`+
+    TECH_STACK.map(r=>`<tr>
+      <td style="color:var(--text)">${r[0]}</td>
+      <td style="color:var(--accent2)">${r[1]}</td>
+      <td><span class="pill pill-${r[2]==='PROD'?'ok':'warn'}">${r[2]}</span></td>
+    </tr>`).join('')+'</tbody>';
+
+  const epicEl = document.getElementById('epicPath');
+  if(epicEl) epicEl.innerHTML = [
+    { step:'1', title:'EPIC APP ORCHard', desc:'List as MANUFURE CLINICAL GRID in Epic\'s marketplace. Requires EHR certification.' },
+    { step:'2', title:'FHIR SMART-ON-FHIR', desc:'OAuth 2.0 launch context. Physician SSO from Epic directly into MANUFURE.' },
+    { step:'3', title:'HL7 MLLP FEED', desc:'Hospital IT enables outbound HL7 v2.x feed to MANUFURE gateway on port 2575.' },
+    { step:'4', title:'SUBSCRIPTION MODEL', desc:'Per-physician license billed monthly. Hospital enterprise seat optional.' },
+    { step:'5', title:'PILOT KPIs', desc:'Measure: discharge delay reduction, physician charting time, alert response time.' },
+  ].map(s=>`<div class="alert-row alert-info" style="margin-bottom:6px;">
+    <span class="alert-icon" style="font-size:12px;color:var(--accent);font-weight:900;">${s.step}</span>
+    <div class="alert-content">
+      <div class="alert-title">${s.title}</div>
+      <div class="alert-desc">${s.desc}</div>
+    </div>
+  </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   VIEW SWITCHING
+═══════════════════════════════════════════════════ */
+function switchView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const names = ['command-center','patients','hl7','licensing','compliance','architecture'];
+  tabs[names.indexOf(name)]?.classList.add('active');
+
+  // Render on demand
+  if(name==='patients')      renderPatients();
+  if(name==='licensing')     renderPhysicians();
+  if(name==='compliance')    renderCompliance();
+  if(name==='architecture')  renderArchitecture();
+  if(name==='hl7')           { renderHL7Types(); renderFHIRSample(); }
+}
+
+function filterDept(dept){
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════════ */
+function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
+function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
+document.addEventListener('click', e => {
+  if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+
+/* ═══════════════════════════════════════════════════
+   CLOCK
+═══════════════════════════════════════════════════ */
+function updateClock(){
+  const el = document.getElementById('clockTime');
+  if(el) el.textContent = tsNow();
+}
+
+/* ═══════════════════════════════════════════════════
+   HL7 COUNTER DISPLAY
+═══════════════════════════════════════════════════ */
+setInterval(()=>{
+  const el = document.getElementById('hl7Counter');
+  if(el){ el.textContent = `↑ ${hl7MsgsPerMin} msgs/min`; hl7MsgsPerMin=0; }
+}, 60000);
+
+/* ═══════════════════════════════════════════════════
+   LIVE METRIC JITTER
+═══════════════════════════════════════════════════ */
+function jitterMetrics(){
+  const census = parseInt(document.getElementById('m-census')?.textContent||312);
+  const alert  = parseInt(document.getElementById('m-alerts')?.textContent||18);
+  const el = document.getElementById('m-hl7');
+  if(el) el.textContent = (rand(1200,1350)).toLocaleString();
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+function init(){
+  renderDepts();
+  renderAlerts();
+  renderThroughputBars();
+  renderAiInsights();
+  updateClock();
+
+  // HL7 simulation: emit every 1.5–4s
+  function scheduleHL7(){ setTimeout(()=>{ emitHL7(); scheduleHL7(); }, rand(1500,4000)); }
+  scheduleHL7();
+
+  setInterval(updateClock, 1000);
+  setInterval(jitterMetrics, 8000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
