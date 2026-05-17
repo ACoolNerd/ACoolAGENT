@@ -12,11 +12,20 @@ package-lock.json
 .AppleDouble
 .LSOverride
 
+# Local media captures and browser shortcuts
+*.mov
+*.mp4
+*.png
+*.jpg
+*.jpeg
+*.webloc
+
 # Claude internal
 .claude/
 
 # Temp / scratch files
 ZZZZ.json
+acool_ecosystem_full_dashboard.html
 *.swp
 *.swo
 
