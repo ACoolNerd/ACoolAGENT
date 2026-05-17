@@ -103,11 +103,76 @@ Governance is required in the first build pass.
 | API protection | Validate request shape, identity, and authorization before business logic. |
 | Error handling | Prevent internal stack traces or secrets from reaching users. |
 
-## VI. Standard Build Templates
+## VI. Automation Cadence Layer
+
+Every project must decide what should happen automatically, what should remain manual, and what cadence is appropriate. Automations are governed assets, not casual reminders.
+
+### Automation Decision Prompt
+
+Before implementation, answer:
+
+1. What outcomes must happen without the owner remembering?
+2. What decisions still require a human yes/no?
+3. What is the correct pace: daily, weekly, monthly, quarterly, event-driven, or manual?
+4. Who owns the automation?
+5. What channel should it use?
+6. What happens when the user ignores it, snoozes it, or the automation fails?
+7. What audit events must be logged?
+
+### Default Automation Object
+
+Use the 7-field schema law at the top level. Place cadence details in `metadata`.
+
+```json
+{
+  "id": "automation-revenue-daily-checkin",
+  "entity": "ACool Ecosystem",
+  "type": "automation",
+  "name": "Daily Revenue Pipeline Check-In",
+  "status": "draft",
+  "owner": "ACoolNERD",
+  "updatedAt": "2026-05-17T00:00:00.000Z",
+  "metadata": {
+    "cadence": "daily",
+    "trigger": "08:30 America/New_York",
+    "channel": "WhatsApp",
+    "audience": "Keith Z. C. McPherson",
+    "prompt": "List yesterday's revenue actions, today's top 3 revenue moves, and any blocked follow-ups.",
+    "escalation": "If no response by 12:00, resend once. If no response by 17:00, mark missed and include in weekly review.",
+    "successMetric": "One revenue-producing action logged per business day.",
+    "auditEvents": ["activated", "sent", "responded", "snoozed", "missed", "escalated", "retired"]
+  }
+}
+```
+
+### Default Cadence Guidance
+
+| Cadence | Best Use | ACool Example |
+| --- | --- | --- |
+| Daily | Revenue, priorities, urgent blockers, compliance deadlines | ACoolNERD revenue check-in; board reply review; top 3 execution priorities. |
+| Weekly | KPI summaries, board outreach, funding scans, roadmap review | Friday ACoolECOSYSTEM progress digest; grant opportunity scan. |
+| Monthly | Governance, financials, board packet, compliance calendar | Monthly board packet; entity filing calendar; finance summary. |
+| Quarterly | Strategy, portfolio review, RACI refresh, annual planning | Butler and Sons enterprise strategy review; entity portfolio audit. |
+| Event-driven | Leads, yes/no replies, webhook failures, payments, filings | Board member says yes; WhatsApp webhook fails; payment received; EIN issued. |
+| Manual | Sensitive actions requiring judgment or legal review | Entity filing submission; legal document approval; board appointment. |
+
+### Recommended ACool Operating Automations
+
+| Automation | Cadence | Owner | Channel | Purpose |
+| --- | --- | --- | --- | --- |
+| Revenue Pipeline Check-In | Daily weekday | ACoolNERD | WhatsApp/dashboard | Keep ACoolNERD and ACoolBUSINESS focused on cash-first execution. |
+| Top 3 Priority Lock | Daily weekday | ACoolNERD | WhatsApp | Force the day into three accountable outcomes. |
+| Board Reply Tracker | Daily until first board meeting | ACoolBOARD owner | Email/dashboard | Track yes/no/needs-follow-up responses. |
+| LA Resource Opportunity Scan | Weekly | ACoolACADEMY owner | Dashboard/email | Review BSC, EWDD, NEW, CRCD, PACE, MCS opportunities. |
+| Governance Review Digest | Weekly | Auditor role | Dashboard | Surface missed approvals, stale tasks, and role conflicts. |
+| Entity Compliance Calendar | Monthly | Compliance owner | Calendar/email | Track LLC, FBN, tax, nonprofit, and board filing deadlines. |
+| Board Packet Builder | Monthly | Secretary/Treasurer | Docs/email | Prepare decisions, metrics, risks, and asks for board review. |
+
+## VII. Standard Build Templates
 
 See `docs/governance/BUILD_TEMPLATES.md`.
 
-## VII. Integration Pattern
+## VIII. Integration Pattern
 
 Default to hub-and-spoke when multiple entities or tools are involved.
 
@@ -122,13 +187,14 @@ Command Hub
 
 Each spoke must own its branding, routes, config, deployment target, and P&L logic where applicable.
 
-## VIII. Pre-Ship Checklist
+## IX. Pre-Ship Checklist
 
 - [ ] Entity workspace is explicit.
 - [ ] No brand or logic crosses workspace boundaries.
 - [ ] 7-field schema law is applied or exception is documented.
 - [ ] RBAC and separation of duties are defined.
 - [ ] Audit events are identified.
+- [ ] Automation cadence is defined or explicitly marked not required.
 - [ ] Source of truth is named.
 - [ ] Output formats match stakeholder needs.
 - [ ] README or handoff doc exists.

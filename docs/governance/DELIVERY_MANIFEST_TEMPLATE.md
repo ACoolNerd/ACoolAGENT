@@ -71,6 +71,21 @@
 | approve |  |  |  |
 | access |  |  |  |
 
+## Automation Plan
+
+| Automation | Cadence | Owner | Channel | Trigger | Escalation | Success Metric | Audit Events |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  | Daily / weekly / monthly / quarterly / event-driven / manual |  | WhatsApp / email / dashboard / calendar / GitHub / Notion |  |  |  |  |
+
+### Automation Decisions
+
+- Automations required:
+- Automations explicitly not required:
+- Human approval required before:
+- Default timezone:
+- Snooze policy:
+- Failure notification path:
+
 ## Verification Evidence
 
 | Check | Command Or Method | Result | Evidence Location |
